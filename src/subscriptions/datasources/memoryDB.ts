@@ -52,7 +52,7 @@ const memoryDB: IMemoryDB = {
     {
       id: '1',
       name: faker.name.findName(),
-      email: faker.internet.email(),
+      email: 'user-1@gmail.com',
       orgId: null,
       locationId: locationId1,
       userType: UserType.ZELO,
@@ -60,7 +60,7 @@ const memoryDB: IMemoryDB = {
     {
       id: '2',
       name: faker.name.findName(),
-      email: faker.internet.email(),
+      email: 'user-2@gmail.com',
       orgId: orgId2,
       locationId: null,
       userType: UserType.ZEWI,
@@ -68,7 +68,7 @@ const memoryDB: IMemoryDB = {
     {
       id: '3',
       name: faker.name.findName(),
-      email: faker.internet.email(),
+      email: 'user-3@gmail.com',
       orgId: orgId1,
       locationId: null,
       userType: UserType.ZOWI,
@@ -76,7 +76,7 @@ const memoryDB: IMemoryDB = {
     {
       id: '4',
       name: faker.name.findName(),
-      email: faker.internet.email(),
+      email: 'user-4@gmail.com',
       orgId: null,
       locationId: locationId3,
       userType: UserType.ZOLO,
