@@ -62,8 +62,8 @@ async function createServer(options: IServerOptions): Promise<http.Server | void
         userConnector,
         templateConnector: new TemplateConnector<IMemoryDB>(
           memoryDB,
-          // pubsub,
-          postgresPubSub,
+          pubsub,
+          // postgresPubSub,
         ),
       };
     }
@@ -94,8 +94,8 @@ async function createServer(options: IServerOptions): Promise<http.Server | void
           }
 
           const context: ISubscriptionContext = {
-            pubsub: postgresPubSub,
-            // pubsub,
+            // pubsub: postgresPubSub,
+            pubsub,
             subscribeUser: user,
             userConnector,
             locationConnector: new LocationConnector<IMemoryDB>(memoryDB),

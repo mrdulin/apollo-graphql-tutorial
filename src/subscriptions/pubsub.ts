@@ -23,7 +23,7 @@ async function createPostgresPubSub(): Promise<PubSub> {
 }
 
 function commonMessageHandler(message) {
-  console.log('commonMessageHandler: ', JSON.stringify(message));
+  // console.log('commonMessageHandler: ', JSON.stringify(message));
   return message;
 }
 
