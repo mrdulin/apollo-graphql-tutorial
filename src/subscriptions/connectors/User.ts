@@ -38,15 +38,11 @@ class UserConnector<Datasource extends IMemoryDB> extends BaseConnector<Datasour
   }
 
   public async findByEmail(email: string): Promise<IUser> {
-    return new Promise((resolve, reject) => {
-      process.nextTick(() => {
-        const user = this.datasource.users.find((u: IUser): boolean => u.email === email);
-        if (!user) {
-          reject(new Error('No user found.'));
-        }
-        resolve(user);
-      });
-    });
+    const user: IUser | undefined = this.datasource.users.find((u: IUser): boolean => u.email === email);
+    if (!user) {
+      throw new Error('No user found.');
+    }
+    return user;
   }
 }
 
