@@ -3,7 +3,7 @@ import { IResolvers } from 'graphql-tools';
 
 import { ILocation, ITemplate, UserType, IUser } from './datasources/memoryDB';
 import { ICommonResponse } from './models/CommonResponse';
-import { pubsub, TriggerNameType, withFilter } from './pubsub';
+import { TriggerNameType, withFilter } from './pubsub';
 import { IAppContext, ISubscriptionContext } from './server';
 import { Omit } from './models/Base';
 import { intersection } from './util';
@@ -74,7 +74,7 @@ const resolvers: IResolvers = {
   },
 };
 
-function templateIterator() {
+function templateIterator(__, ___, { pubsub }: ISubscriptionContext) {
   return pubsub.asyncIterator([TriggerNameType.TEMPLATE_ADDED]);
 }
 
@@ -132,9 +132,13 @@ async function templateFilter(
       }
       break;
   }
-
+  console.log(
+    `notificationIds: ${JSON.stringify(notificationIds)}, subscribeLocationIds: ${JSON.stringify(
+      subscribeLocationIds,
+    )}`,
+  );
   const shouldNotify: boolean = intersection(notificationIds, subscribeLocationIds).length > 0;
-
+  console.log(`user: ${subscribeUser.userType}, should notify: ${shouldNotify}`);
   return shouldNotify;
 }
 

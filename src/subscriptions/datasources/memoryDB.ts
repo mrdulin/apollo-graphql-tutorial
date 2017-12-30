@@ -30,10 +30,10 @@ interface ITemplate {
 
 const orgId1 = faker.random.uuid();
 const orgId2 = faker.random.uuid();
-const locationId1 = faker.random.uuid();
-const locationId2 = faker.random.uuid();
-const locationId3 = faker.random.uuid();
-const locationId4 = faker.random.uuid();
+const locationId1 = '1';
+const locationId2 = '2';
+const locationId3 = '3';
+const locationId4 = '4';
 
 interface IMemoryDB {
   locations: ILocation[];
@@ -50,7 +50,7 @@ const memoryDB: IMemoryDB = {
   ],
   users: [
     {
-      id: faker.random.uuid(),
+      id: '1',
       name: faker.name.findName(),
       email: faker.internet.email(),
       orgId: null,
@@ -58,7 +58,7 @@ const memoryDB: IMemoryDB = {
       userType: UserType.ZELO,
     },
     {
-      id: faker.random.uuid(),
+      id: '2',
       name: faker.name.findName(),
       email: faker.internet.email(),
       orgId: orgId2,
@@ -66,7 +66,7 @@ const memoryDB: IMemoryDB = {
       userType: UserType.ZEWI,
     },
     {
-      id: faker.random.uuid(),
+      id: '3',
       name: faker.name.findName(),
       email: faker.internet.email(),
       orgId: orgId1,
@@ -74,7 +74,7 @@ const memoryDB: IMemoryDB = {
       userType: UserType.ZOWI,
     },
     {
-      id: faker.random.uuid(),
+      id: '4',
       name: faker.name.findName(),
       email: faker.internet.email(),
       orgId: null,
