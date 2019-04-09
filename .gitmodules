@@ -1,6 +1,0 @@
-[submodule "submodule-project-1"]
-	path = submodule-project-1
-	url = https://github.com/mrdulin/submodule-project-1.git
-[submodule "submodule-project-2"]
-	path = submodule-project-2
-	url = https://github.com/mrdulin/submodule-project-2.git
