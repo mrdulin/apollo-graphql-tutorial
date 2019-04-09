@@ -1,2 +1,1 @@
-# main-poject
-for git submodule testing
+# Learning apollo server 2.x
