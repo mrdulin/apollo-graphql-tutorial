@@ -21,6 +21,7 @@ const typeDefs = gql`
 
   type Query {
     templates: [Template!]
+    templateById(id: ID!): Template
     locationsByOrgId(id: ID!): [Location!]
   }
 
@@ -30,7 +31,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    editTemplate(templateInput: TemplateInput): CommonResponse!
+    editTemplate(templateInput: TemplateInput!): CommonResponse!
   }
 
   schema {

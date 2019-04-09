@@ -1,5 +1,5 @@
 import { ApolloServer } from 'apollo-server';
-import http from 'http';
+import * as http from 'http';
 
 import { typeDefs } from './typeDefs';
 import { resolvers } from './resolvers';
