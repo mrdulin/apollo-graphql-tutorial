@@ -43,11 +43,10 @@ class TemplateConnector<Datasource extends IMemoryDB> extends BaseConnector<Data
   public add(templateInput: IAddTemplateInput): ICommonResponse {
     const template = Object.assign({}, templateInput, { id: faker.random.uuid() });
     this.datasource.templates.push(template);
-    this.publish(template);
-    return { success: true, message: 'Add template successfully.' };
+    return { success: true, message: 'Add template successfully.', payload: template };
   }
 
-  private publish(payload: any) {
+  public publish(payload: any) {
     this.pubsub.publish(TriggerNameType.TEMPLATE_ADDED, payload);
   }
 }
