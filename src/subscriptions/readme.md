@@ -269,15 +269,11 @@ templateFilter: 4
 
 这就足够我们区分当前上下文中，是哪个客户端了。
 
-Mutation addTemplate, the value of shareLocationIds is [location 3]
+在`template`实体上，有个字段叫做`shareLocationIds`, 业务含义是该`template`可以共享给哪些`location`, 这里可以用它来和`client 1` , `client 2`, `client 3`, `client 4`对应的`location`求**交集**，`client 2`对应的`location`是`location 3`，`client 3`对应的`location`是`location 3`和`location 4`。因此当`shareLocationIds`是`[location 3]`时。
 
-使用`withFilter`方法过滤
+1. `shareLocationsIds`∩ `[location 3]` = `true`，应该推送消息给`client 2`
 
-In withFilter method,  we calculate the intersection of two arrays: shareLocationIds and the locations found by userType and orgId fields.
-
-That's why user ZOLO and ZEWI (client 2 and client 3) can get the websocket message from server, the other clients can't.
-
-
+2. `shareLocationsIds`∩ `[location 3, location 4]` = `true`，应该推送消息给`client 3`
 
 最终结果：
 
@@ -285,7 +281,17 @@ That's why user ZOLO and ZEWI (client 2 and client 3) can get the websocket mess
 
 可以看到，`ZOLO`和`ZEWI`用户（客户端`client 2`和`client 3`)收到了服务端`WebSocket`服务推送的消息，这里是新创建的`template`。而其他客户端`client 1`, `client 4`和`client 5`则没有收到推送的消息，满足了开始的需求。
 
+### 源码
+
+https://github.com/mrdulin/apollo-graphql-tutorial/tree/master/src/subscriptions
+
 ### 参考
 
 - https://www.apollographql.com/docs/graphql-subscriptions/
 - https://www.apollographql.com/docs/apollo-server/features/subscriptions
+
+
+
+---
+
+<a href="https://info.flagcounter.com/ab0j"><img src="https://s11.flagcounter.com/count2/ab0j/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_12/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
