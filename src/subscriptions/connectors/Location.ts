@@ -1,5 +1,5 @@
 import { BaseConnector } from './Base';
-import { IMemoryDB } from '../datasources/memoryDB';
+import { IMemoryDB, ILocation } from '../datasources/memoryDB';
 
 class LocationConnector<Datasource extends IMemoryDB> extends BaseConnector<Datasource> {
   constructor(datasource: Datasource) {
@@ -12,6 +12,10 @@ class LocationConnector<Datasource extends IMemoryDB> extends BaseConnector<Data
 
   public findLocationIdsByOrgId(id: string) {
     return this.findLocationsByOrgId(id).map(loc => loc.id);
+  }
+
+  public findAll(): ILocation[] {
+    return this.datasource.locations;
   }
 }
 

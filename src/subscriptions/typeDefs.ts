@@ -32,6 +32,7 @@ const typeDefs = gql`
   type Query {
     templates: [Template!]
     templateById(id: ID!): Template
+    locations: [Location!]
     locationsByOrgId(id: ID!): [Location!]
   }
 
