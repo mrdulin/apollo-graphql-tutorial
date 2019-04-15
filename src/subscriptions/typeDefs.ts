@@ -36,8 +36,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    editTemplate(templateInput: EditTemplateInput!): CommonResponse!
-    addTemplate(templateInput: AddTemplateInput!): CommonResponse!
+    editTemplate(templateInput: EditTemplateInput!): CommonResponse
+    addTemplate(templateInput: AddTemplateInput!): CommonResponse
   }
 
   type Subscription {

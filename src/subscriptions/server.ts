@@ -22,7 +22,15 @@ interface IContextFunctionParams {
 }
 
 interface IAppContext extends IConnectors<IMemoryDB> {
-  user: IUser | undefined;
+  requestingUser: IUser | undefined;
+}
+
+interface ISubscriptionContext extends Pick<IConnectors<IMemoryDB>, 'locationConnector' | 'userConnector'> {
+  subscribeUser: IUser | undefined;
+}
+
+interface IWebSocketConnectionParams {
+  token?: string;
 }
 
 const contextFunction: ContextFunction<IContextFunctionParams, IConnectors<IMemoryDB>> = (
@@ -42,7 +50,7 @@ const contextFunction: ContextFunction<IContextFunctionParams, IConnectors<IMemo
       throw error;
     }
     return {
-      user,
+      requestingUser: user,
       locationConnector: new LocationConnector<IMemoryDB>(memoryDB),
       userConnector,
       templateConnector: new TemplateConnector<IMemoryDB>(memoryDB, pubsub)
@@ -58,11 +66,36 @@ async function createServer(options: IServerOptions): Promise<http.Server | void
     resolvers,
     context: contextFunction,
     subscriptions: {
-      onConnect: (connectionParams: object, webSocket: WebSocket, context: ConnectionContext) => {
+      onConnect: (
+        connectionParams: IWebSocketConnectionParams,
+        webSocket: WebSocket,
+        connectionContext: ConnectionContext
+      ) => {
         console.log('websocket connect');
         console.log('connectionParams: ', connectionParams);
+        if (connectionParams.token) {
+          const token: string = validateToken(connectionParams.token);
+          const userConnector = new UserConnector<IMemoryDB>(memoryDB);
+          let user: IUser | undefined;
+          try {
+            const userType: UserType = UserType[token];
+            user = userConnector.findUserByUserType(userType);
+          } catch (error) {
+            throw error;
+          }
+
+          const context: ISubscriptionContext = {
+            subscribeUser: user,
+            userConnector,
+            locationConnector: new LocationConnector<IMemoryDB>(memoryDB)
+          };
+
+          return context;
+        }
+
+        throw new Error('Missing auth token!');
       },
-      onDisconnect: (webSocket: WebSocket, context: ConnectionContext) => {
+      onDisconnect: (webSocket: WebSocket, connectionContext: ConnectionContext) => {
         console.log('websocket disconnect');
       }
     }
@@ -80,4 +113,4 @@ async function createServer(options: IServerOptions): Promise<http.Server | void
     });
 }
 
-export { createServer, IServerOptions };
+export { createServer, IServerOptions, IAppContext, ISubscriptionContext };

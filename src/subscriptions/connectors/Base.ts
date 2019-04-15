@@ -1,5 +1,5 @@
 class BaseConnector<Datasource> {
-  public datasource: Datasource;
+  protected datasource: Datasource;
   constructor(datasource: Datasource) {
     this.datasource = datasource;
   }
