@@ -7,9 +7,14 @@ const typeDefs = gql`
     shareLocationIds: [ID!]
   }
 
-  input TemplateInput {
+  input EditTemplateInput {
     id: ID!
     name: String
+    shareLocationIds: [ID!]
+  }
+
+  input AddTemplateInput {
+    name: String!
     shareLocationIds: [ID!]
   }
 
@@ -19,24 +24,30 @@ const typeDefs = gql`
     orgId: ID!
   }
 
+  type CommonResponse {
+    success: Boolean!
+    message: String
+  }
+
   type Query {
     templates: [Template!]
     templateById(id: ID!): Template
     locationsByOrgId(id: ID!): [Location!]
   }
 
-  type CommonResponse {
-    success: Boolean!
-    message: String
+  type Mutation {
+    editTemplate(templateInput: EditTemplateInput!): CommonResponse!
+    addTemplate(templateInput: AddTemplateInput!): CommonResponse!
   }
 
-  type Mutation {
-    editTemplate(templateInput: TemplateInput!): CommonResponse!
+  type Subscription {
+    templateAdded: Template
   }
 
   schema {
     query: Query
     mutation: Mutation
+    subscription: Subscription
   }
 `;
 

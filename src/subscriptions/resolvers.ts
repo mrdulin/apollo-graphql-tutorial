@@ -1,6 +1,7 @@
 import { IConnectors } from './connectors';
 import { IMemoryDB, ILocation, ITemplate } from './datasources/memoryDB';
 import { ICommonResponse } from './models/CommonResponse';
+import { pubsub, TriggerNameType } from './pubsub';
 
 const resolvers = {
   Query: {
@@ -20,6 +21,21 @@ const resolvers = {
   Mutation: {
     editTemplate: (_, { templateInput }, { templateConnector }: IConnectors<IMemoryDB>): ICommonResponse => {
       return templateConnector.edit(templateInput);
+    },
+
+    addTemplate: (_, { templateInput }, { templateConnector }: IConnectors<IMemoryDB>): ICommonResponse => {
+      return templateConnector.add(templateInput);
+    }
+  },
+
+  Subscription: {
+    templateAdded: {
+      resolve: (payload: any): any => {
+        return payload;
+      },
+      subscribe: () => {
+        return pubsub.asyncIterator([TriggerNameType.TEMPLATE_ADDED]);
+      }
     }
   }
 };
