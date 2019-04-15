@@ -125,12 +125,11 @@ async function templateFilter(
       }
       break;
     case UserType.ZEWI:
+    case UserType.ZOWI:
       if (subscribeUser.orgId) {
         subscribeLocationIds = locationConnector.findLocationIdsByOrgId(subscribeUser.orgId);
       }
       break;
-    case UserType.ZOWI:
-      return NOTIFY;
   }
 
   const shouldNotify: boolean = intersection(notificationIds, subscribeLocationIds).length > 0;
