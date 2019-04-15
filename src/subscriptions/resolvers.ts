@@ -23,6 +23,10 @@ const resolvers: IResolvers = {
       return templateConnector.findById(id);
     },
 
+    locations: (__, ___, { locationConnector }: IAppContext): ILocation[] => {
+      return locationConnector.findAll();
+    },
+
     locationsByOrgId: (__, { id }, { locationConnector }: IAppContext): ILocation[] => {
       return locationConnector.findLocationsByOrgId(id);
     }
@@ -57,8 +61,13 @@ const resolvers: IResolvers = {
 
   Subscription: {
     templateAdded: {
-      resolve: (payload: any): any => {
-        return payload;
+      resolve: (
+        payload: ISubscriptionPayload<ITemplate, Pick<IAppContext, 'requestingUser'>>,
+        args: any,
+        subscriptionContext: ISubscriptionContext,
+        info: any
+      ): ITemplate => {
+        return payload.data;
       },
       subscribe: withFilter(templateIterator, templateFilter)
     }
@@ -95,7 +104,8 @@ async function templateFilter(
       userConnector.findByEmail(context.requestingUser.email)
     ]);
   } catch (error) {
-    throw error;
+    console.error(error);
+    return DONT_NOTIFY;
   }
 
   const [subscribeUser, requestingUser] = results;
@@ -108,7 +118,8 @@ async function templateFilter(
   const notificationIds = template.shareLocationIds;
   let subscribeLocationIds: string[] = [];
   switch (subscribeUser.userType) {
-    case UserType.ZELO || UserType.ZOLO:
+    case UserType.ZOLO:
+    case UserType.ZELO:
       if (subscribeUser.locationId) {
         subscribeLocationIds = [subscribeUser.locationId];
       }
