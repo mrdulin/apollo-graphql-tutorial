@@ -84,6 +84,7 @@ async function templateFilter(
   subscriptionContext?: ISubscriptionContext,
   info?: any
 ): Promise<boolean> {
+  console.count('templateFilter');
   const NOTIFY: boolean = true;
   const DONT_NOTIFY: boolean = false;
   if (!payload || !subscriptionContext) {
