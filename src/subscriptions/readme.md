@@ -21,11 +21,11 @@
 
 ![image](https://user-images.githubusercontent.com/17866683/56124163-988c8080-5fa8-11e9-8ffa-aee715f87449.png)
 
-现在有5个client instances, 1个server instance, 5个client instances都与server建立了`websocket`连接。这5个client instances分别对应5个用户，用户有个`userType`业务字段。
+现在有5个client instances, 1个server instance, 4个client instances与server建立了`websocket`连接。这5个client instances分别对应5个用户，用户有个`userType`业务字段。
 
 - [ ] 补UML图
 
-需求是`client 5`执行一个`GraphQL` `Mutation`操作，这里是`addTemplate`，当创建`template`成功以后，怎么通过`WebSocket`这个全双工通信协议，推送新创建的`template`给`client 2`和`client 3`，而不推送给`client 1`,`client 4`和`client5`（自己）。
+需求是`client 5`执行一个`GraphQL` `Mutation`操作，这里是`addTemplate`，当创建`template`成功以后，怎么通过`WebSocket`这个全双工通信协议，推送新创建的`template`给`client 2`和`client 3`，而不推送给`client 1`,`client 4`。
 
 ### 解决方案
 
