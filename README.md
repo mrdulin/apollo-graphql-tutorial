@@ -1,4 +1,6 @@
-# Learning apollo server 2.x
+# Learning apollo graphql version 2
+
+If you are looking for tutorial for apollo graphql version 1, please see this [repo](https://github.com/mrdulin/apollo-server-express-starter)
 
 ## TODO
 
