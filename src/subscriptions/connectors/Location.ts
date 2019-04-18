@@ -7,11 +7,11 @@ class LocationConnector<Datasource extends IMemoryDB> extends BaseConnector<Data
   }
 
   public findLocationsByOrgId(id: string) {
-    return this.datasource.locations.filter(location => location.orgId === id);
+    return this.datasource.locations.filter((location) => location.orgId === id);
   }
 
   public findLocationIdsByOrgId(id: string) {
-    return this.findLocationsByOrgId(id).map(loc => loc.id);
+    return this.findLocationsByOrgId(id).map((loc) => loc.id);
   }
 
   public findAll(): ILocation[] {

@@ -4,7 +4,7 @@ enum UserType {
   ZELO = 'ZELO',
   ZEWI = 'ZEWI',
   ZOWI = 'ZOWI',
-  ZOLO = 'ZOLO'
+  ZOLO = 'ZOLO',
 }
 
 interface ILocation {
@@ -46,7 +46,7 @@ const memoryDB: IMemoryDB = {
     { id: locationId1, orgId: orgId1, name: faker.address.city() },
     { id: locationId2, orgId: orgId1, name: faker.address.city() },
     { id: locationId3, orgId: orgId2, name: faker.address.city() },
-    { id: locationId4, orgId: orgId2, name: faker.address.city() }
+    { id: locationId4, orgId: orgId2, name: faker.address.city() },
   ],
   users: [
     {
@@ -55,7 +55,7 @@ const memoryDB: IMemoryDB = {
       email: faker.internet.email(),
       orgId: null,
       locationId: locationId1,
-      userType: UserType.ZELO
+      userType: UserType.ZELO,
     },
     {
       id: faker.random.uuid(),
@@ -63,7 +63,7 @@ const memoryDB: IMemoryDB = {
       email: faker.internet.email(),
       orgId: orgId2,
       locationId: null,
-      userType: UserType.ZEWI
+      userType: UserType.ZEWI,
     },
     {
       id: faker.random.uuid(),
@@ -71,7 +71,7 @@ const memoryDB: IMemoryDB = {
       email: faker.internet.email(),
       orgId: orgId1,
       locationId: null,
-      userType: UserType.ZOWI
+      userType: UserType.ZOWI,
     },
     {
       id: faker.random.uuid(),
@@ -79,13 +79,13 @@ const memoryDB: IMemoryDB = {
       email: faker.internet.email(),
       orgId: null,
       locationId: locationId3,
-      userType: UserType.ZOLO
-    }
+      userType: UserType.ZOLO,
+    },
   ],
   templates: [
     { id: faker.random.uuid(), name: faker.lorem.word(), shareLocationIds: [locationId1] },
-    { id: faker.random.uuid(), name: faker.lorem.word(), shareLocationIds: [locationId2] }
-  ]
+    { id: faker.random.uuid(), name: faker.lorem.word(), shareLocationIds: [locationId2] },
+  ],
 };
 
 export { memoryDB, UserType, ILocation, ITemplate, IUser, IMemoryDB };

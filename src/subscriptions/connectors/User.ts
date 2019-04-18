@@ -29,7 +29,7 @@ class UserConnector<Datasource extends IMemoryDB> extends BaseConnector<Datasour
     if (roles) {
       if (!roles.includes(user.userType)) {
         throw new AuthenticationError(
-          `No permission. userType: ${user.userType}. User roles should be one of: ${JSON.stringify(roles)}`
+          `No permission. userType: ${user.userType}. User roles should be one of: ${JSON.stringify(roles)}`,
         );
       }
     }
