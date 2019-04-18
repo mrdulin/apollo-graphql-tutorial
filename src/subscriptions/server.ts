@@ -34,7 +34,7 @@ interface IWebSocketConnectionParams {
 }
 
 const contextFunction: ContextFunction<IContextFunctionParams, IConnectors<IMemoryDB>> = (
-  context: IContextFunctionParams
+  context: IContextFunctionParams,
 ): Context<IAppContext> => {
   const { req, connection } = context;
   if (connection) {
@@ -53,7 +53,7 @@ const contextFunction: ContextFunction<IContextFunctionParams, IConnectors<IMemo
       requestingUser: user,
       locationConnector: new LocationConnector<IMemoryDB>(memoryDB),
       userConnector,
-      templateConnector: new TemplateConnector<IMemoryDB>(memoryDB, pubsub)
+      templateConnector: new TemplateConnector<IMemoryDB>(memoryDB, pubsub),
     };
   }
 };
@@ -70,7 +70,7 @@ async function createServer(options: IServerOptions): Promise<http.Server | void
       onConnect: (
         connectionParams: IWebSocketConnectionParams,
         webSocket: WebSocket,
-        connectionContext: ConnectionContext
+        connectionContext: ConnectionContext,
       ) => {
         console.log('websocket connect');
         console.log('connectionParams: ', connectionParams);
@@ -88,7 +88,7 @@ async function createServer(options: IServerOptions): Promise<http.Server | void
           const context: ISubscriptionContext = {
             subscribeUser: user,
             userConnector,
-            locationConnector: new LocationConnector<IMemoryDB>(memoryDB)
+            locationConnector: new LocationConnector<IMemoryDB>(memoryDB),
           };
 
           return context;
@@ -98,8 +98,8 @@ async function createServer(options: IServerOptions): Promise<http.Server | void
       },
       onDisconnect: (webSocket: WebSocket, connectionContext: ConnectionContext) => {
         console.log('websocket disconnect');
-      }
-    }
+      },
+    },
   });
 
   return server
@@ -108,7 +108,7 @@ async function createServer(options: IServerOptions): Promise<http.Server | void
       console.log(`🚀 Server ready at ${url}`);
       console.log(`🚀 Subscriptions ready at ${subscriptionsUrl}`);
     })
-    .catch(error => {
+    .catch((error) => {
       console.error('Create server failed.');
       console.error(error);
     });

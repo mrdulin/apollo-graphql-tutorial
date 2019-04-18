@@ -3,7 +3,7 @@ import { config } from './config';
 
 async function main() {
   const options: IServerOptions = {
-    PORT: config.HTTP_SERVER.PORT
+    PORT: config.HTTP_SERVER.PORT,
   };
   await createServer(options);
 }

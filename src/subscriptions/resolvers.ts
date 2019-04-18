@@ -29,7 +29,7 @@ const resolvers: IResolvers = {
 
     locationsByOrgId: (__, { id }, { locationConnector }: IAppContext): ILocation[] => {
       return locationConnector.findLocationsByOrgId(id);
-    }
+    },
   },
 
   Mutation: {
@@ -40,7 +40,7 @@ const resolvers: IResolvers = {
     addTemplate: (
       __,
       { templateInput },
-      { templateConnector, userConnector, requestingUser }: IAppContext
+      { templateConnector, userConnector, requestingUser }: IAppContext,
     ): Omit<ICommonResponse, 'payload'> | undefined => {
       if (userConnector.isAuthrized(requestingUser)) {
         const commonResponse: ICommonResponse = templateConnector.add(templateInput);
@@ -48,15 +48,15 @@ const resolvers: IResolvers = {
           const payload = {
             data: commonResponse.payload,
             context: {
-              requestingUser
-            }
+              requestingUser,
+            },
           };
           templateConnector.publish(payload);
         }
 
         return _.omit(commonResponse, 'payload');
       }
-    }
+    },
   },
 
   Subscription: {
@@ -65,13 +65,13 @@ const resolvers: IResolvers = {
         payload: ISubscriptionPayload<ITemplate, Pick<IAppContext, 'requestingUser'>>,
         args: any,
         subscriptionContext: ISubscriptionContext,
-        info: any
+        info: any,
       ): ITemplate => {
         return payload.data;
       },
-      subscribe: withFilter(templateIterator, templateFilter)
-    }
-  }
+      subscribe: withFilter(templateIterator, templateFilter),
+    },
+  },
 };
 
 function templateIterator() {
@@ -82,7 +82,7 @@ async function templateFilter(
   payload?: ISubscriptionPayload<ITemplate, Pick<IAppContext, 'requestingUser'>>,
   args?: any,
   subscriptionContext?: ISubscriptionContext,
-  info?: any
+  info?: any,
 ): Promise<boolean> {
   console.count('templateFilter');
   const NOTIFY: boolean = true;
@@ -102,7 +102,7 @@ async function templateFilter(
   try {
     results = await Promise.all([
       userConnector.findByEmail(subscriptionContext.subscribeUser.email),
-      userConnector.findByEmail(context.requestingUser.email)
+      userConnector.findByEmail(context.requestingUser.email),
     ]);
   } catch (error) {
     console.error(error);
