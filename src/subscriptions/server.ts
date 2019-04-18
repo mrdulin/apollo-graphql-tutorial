@@ -65,6 +65,7 @@ async function createServer(options: IServerOptions): Promise<http.Server | void
     typeDefs,
     resolvers,
     context: contextFunction,
+    introspection: true,
     subscriptions: {
       onConnect: (
         connectionParams: IWebSocketConnectionParams,
