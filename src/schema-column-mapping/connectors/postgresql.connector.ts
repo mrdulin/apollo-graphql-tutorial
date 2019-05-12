@@ -5,7 +5,7 @@ import { camelizeKeys } from '../util';
 
 type DB = Knex;
 
-class PostgreSQLConnector implements IConnector {
+class PostgreSQLConnector implements IConnector<DB> {
   public connect(): DB {
     const config: Knex.Config = {
       client: 'pg',
@@ -20,7 +20,7 @@ class PostgreSQLConnector implements IConnector {
         min: 1,
         max: 1,
       },
-      debug: true,
+      debug: !!process.env.DEBUG || false,
       postProcessResponse: this.postProcessResponse,
     };
     return Knex(config);

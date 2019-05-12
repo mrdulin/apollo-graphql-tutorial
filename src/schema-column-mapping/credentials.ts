@@ -8,6 +8,7 @@ export const credentials: ICredentials = {
   SQL_DATABASE: process.env.SQL_DATABASE || '',
   SQL_USER: process.env.SQL_USER || '',
   SQL_PASSWORD: process.env.SQL_PASSWORD || '',
+  APOLLO_ENGINE_API_KEY: process.env.APOLLO_ENGINE_API_KEY || '',
 };
 
 export { ICredentials };

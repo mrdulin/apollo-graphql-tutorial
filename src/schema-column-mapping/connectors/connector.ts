@@ -1,3 +1,3 @@
-export interface IConnector {
-  connect(): void;
+export interface IConnector<DB> {
+  connect(): DB;
 }

@@ -52,6 +52,7 @@
     "express": "^4.16.4",
     "graphql": "^14.2.1",
     "graphql-import": "^0.7.1",
+    "graphql-middleware": "^3.0.2",
     "graphql-resolvers": "^0.3.3",
     "knex": "^0.17.0-next3",
     "lodash": "^4.17.11",

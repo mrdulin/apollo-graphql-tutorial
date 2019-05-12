@@ -7,6 +7,7 @@ interface ICredentials {
   SQL_DATABASE: string;
   SQL_USER: string;
   SQL_PASSWORD: string;
+  APOLLO_ENGINE_API_KEY: string;
 }
 
 type EnvVars = DotenvParseOutput & ICredentials;
@@ -22,6 +23,7 @@ function loadEnv(): EnvVars {
     SQL_DATABASE: '',
     SQL_USER: '',
     SQL_PASSWORD: '',
+    APOLLO_ENGINE_API_KEY: '',
     ...dotenvConfigOutput.parsed,
   };
   return envVars;

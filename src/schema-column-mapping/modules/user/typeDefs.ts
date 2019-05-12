@@ -10,6 +10,7 @@ const typeDefs = gql`
 
   extend type Query {
     userById(id: ID!): User
+    users: [User]!
   }
 `;
 
