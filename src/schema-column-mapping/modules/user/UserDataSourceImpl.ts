@@ -10,6 +10,10 @@ class UserDataSourceImpl extends PostgresSQLDataCource implements IUserDataSourc
       .where({ user_id: id })
       .get(0);
   }
+
+  public async findAll() {
+    return this.db('users');
+  }
 }
 
 export { UserDataSourceImpl };

@@ -1,7 +1,15 @@
 import { ApolloServer, ServerInfo } from 'apollo-server';
 import { DataSources } from 'apollo-server-core/dist/graphqlOptions';
 
-import { schema, AddressDataSourceImpl, UserDataSourceImpl, IAddressDataSource, IUserDataSource } from './modules';
+import {
+  schemaWithMiddleware,
+  AddressDataSourceImpl,
+  UserDataSourceImpl,
+  IAddressDataSource,
+  IUserDataSource,
+} from './modules';
+import { ContextFunction } from 'apollo-server-core';
+import { credentials } from './credentials';
 
 const PORT = process.env.PORT || '3000';
 
@@ -12,14 +20,23 @@ interface IAppContext {
   };
 }
 
+const contextFunction: ContextFunction = ({ req }) => {
+  return {
+    request: req,
+  };
+};
+
 const server = new ApolloServer({
-  schema,
+  schema: schemaWithMiddleware,
   introspection: true,
   dataSources: (): DataSources<IAppContext> => ({
     address: new AddressDataSourceImpl(),
     user: new UserDataSourceImpl(),
   }),
-  debug: false,
+  context: contextFunction,
+  engine: {
+    apiKey: credentials.APOLLO_ENGINE_API_KEY,
+  },
 });
 
 server
