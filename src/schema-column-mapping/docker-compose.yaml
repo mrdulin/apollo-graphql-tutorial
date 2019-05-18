@@ -1,0 +1,11 @@
+version: '3.1'
+services:
+  pg:
+    image: postgres:9.6
+    restart: always
+    ports:
+      - 5431:5432
+    environment:
+      POSTGRES_DB: ${SQL_DATABASE}
+      POSTGRES_USER: ${SQL_USER}
+      POSTGRES_PASSWORD: ${SQL_PASSWORD}
