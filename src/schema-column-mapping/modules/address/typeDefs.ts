@@ -2,10 +2,10 @@ import { gql } from 'apollo-server';
 
 const typeDefs = gql`
   type Address {
-    address_id: ID!
-    address_country: String
-    address_state: String
-    address_city: String
+    addressId: ID!
+    addressCountry: String
+    addressState: String
+    addressCity: String
   }
 
   extend type Query {

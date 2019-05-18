@@ -8,8 +8,8 @@ const resolvers: IResolvers = {
     },
   },
   User: {
-    user_address: (source, args, { dataSources }: IAppContext) => {
-      return dataSources.address.findById(source.user_address_id);
+    userAddress: (source, args, { dataSources }: IAppContext) => {
+      return dataSources.address.findById(source.userAddressId);
     },
   },
 };

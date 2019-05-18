@@ -1,6 +1,7 @@
 import Knex from 'knex';
 import { credentials } from '../credentials';
 import { IConnector } from './connector';
+import { camelizeKeys } from '../util';
 
 type DB = Knex;
 
@@ -20,8 +21,13 @@ class PostgreSQLConnector implements IConnector {
         max: 1,
       },
       debug: true,
+      postProcessResponse: this.postProcessResponse,
     };
     return Knex(config);
+  }
+
+  private postProcessResponse(result: any, queryContext: any) {
+    return camelizeKeys(result);
   }
 }
 
