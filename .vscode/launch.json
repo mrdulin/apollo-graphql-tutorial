@@ -11,6 +11,16 @@
       "runtimeArgs": ["-r", "ts-node/register"],
       "args": ["${workspaceFolder}/src/subscriptions/main.ts"],
       "console": "integratedTerminal"
+    },
+    {
+      "name": "Current TS File",
+      "type": "node",
+      "request": "launch",
+      "args": ["${relativeFile}"],
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+      "sourceMaps": true,
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector"
     }
   ]
 }
