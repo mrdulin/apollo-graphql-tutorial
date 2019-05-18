@@ -44,6 +44,7 @@
     "proxy-agent": "^3.1.0",
     "ts-node": "^8.0.3",
     "tslint": "^5.15.0",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.4.3"
   },
   "dependencies": {
