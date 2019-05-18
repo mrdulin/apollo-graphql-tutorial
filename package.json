@@ -1,8 +1,8 @@
 {
   "name": "apollo-graphql-tutorial",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Deep into Apollo GraphQL with Node.js",
+  "main": "",
   "scripts": {
     "test": "echo 'test pass'",
     "watch": "nodemon --watch './src/**/*.ts' --ignore './src/**/*.spec.ts' --exec 'ts-node'",
@@ -15,7 +15,12 @@
     "type": "git",
     "url": "git+https://github.com/mrdulin/apollo-graphql-tutorial.git"
   },
-  "keywords": [],
+  "keywords": [
+    "GraphQL",
+    "apollographql",
+    "GraphQL Subscription",
+    "apollo-server"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
