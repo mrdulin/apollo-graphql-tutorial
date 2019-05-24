@@ -7,9 +7,10 @@ import {
   UserDataSourceImpl,
   IAddressDataSource,
   IUserDataSource,
-} from './modules';
+} from './schema';
 import { ContextFunction } from 'apollo-server-core';
 import { credentials } from './credentials';
+import { IPostDataSource, PostDataSourceImpl } from './modules/post';
 
 const PORT = process.env.PORT || '3000';
 
@@ -17,6 +18,7 @@ interface IAppContext {
   dataSources: {
     address: IAddressDataSource;
     user: IUserDataSource;
+    post: IPostDataSource;
   };
 }
 
@@ -32,6 +34,7 @@ const server = new ApolloServer({
   dataSources: (): DataSources<IAppContext> => ({
     address: new AddressDataSourceImpl(),
     user: new UserDataSourceImpl(),
+    post: new PostDataSourceImpl(),
   }),
   context: contextFunction,
   engine: {

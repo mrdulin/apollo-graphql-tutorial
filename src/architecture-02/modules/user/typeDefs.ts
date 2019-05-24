@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server';
 
 const typeDefs = gql`
-  type User {
+  type User @camelizeKeys {
     userId: ID!
     userNme: String
     userEmail: String!

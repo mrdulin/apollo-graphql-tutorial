@@ -19,6 +19,19 @@ export async function up(knex: Knex): Promise<any> {
       .references('address_id')
       .inTable('addresses');
   });
+
+  await knex.schema.createTable('posts', (t: Knex.TableBuilder) => {
+    t.increments('post_id');
+    t.string('post_title', 100)
+      .unique()
+      .notNullable();
+    t.text('post_content', 'longtext').notNullable();
+    t.timestamp('post_created_at').defaultTo(knex.fn.now());
+    t.integer('post_author_id').unsigned();
+    t.foreign('post_author_id')
+      .references('user_id')
+      .inTable('users');
+  });
 }
 
 export async function down(knex: Knex): Promise<any> {
