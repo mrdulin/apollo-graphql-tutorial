@@ -1,4 +1,4 @@
-import { IResolvers, MergeInfo } from 'apollo-server';
+import { IResolvers } from 'apollo-server';
 import { IAppContext } from '../../server';
 
 const resolvers: IResolvers = {
@@ -11,7 +11,7 @@ const resolvers: IResolvers = {
     },
   },
   User: {
-    userAddress: (source, args, { dataSources }: IAppContext) => {
+    userAddress: (source, _, { dataSources }: IAppContext) => {
       return dataSources.address.findById(source.userAddressId);
     },
   },

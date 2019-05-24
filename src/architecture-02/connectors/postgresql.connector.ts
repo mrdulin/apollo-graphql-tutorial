@@ -20,13 +20,19 @@ class PostgreSQLConnector implements IConnector<DB> {
         min: 1,
         max: 1,
       },
-      debug: !!process.env.DEBUG || false,
+      debug: process.env.NODE_ENV !== 'production',
       postProcessResponse: this.postProcessResponse,
     };
     return Knex(config);
   }
 
   private postProcessResponse(result: any, queryContext: any) {
+    if (result.rows && result.rows.length) {
+      result.rows = result.rows.map((row: any) => {
+        return camelizeKeys(row);
+      });
+      return result;
+    }
     return camelizeKeys(result);
   }
 }
