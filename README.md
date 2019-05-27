@@ -7,3 +7,7 @@ If you are looking for tutorial for Apollo GraphQL version 1.x, please see this 
 ## TODO
 
 - [ ] https://www.apollographql.com/docs/references/apollo-config
+
+## References
+
+- https://graphql.org/learn/queries/#multiple-fields-in-mutations
