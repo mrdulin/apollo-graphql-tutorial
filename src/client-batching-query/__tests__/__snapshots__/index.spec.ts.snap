@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`client batching query mutation #addPost - multiple mutations 1`] = `
+Object {
+  "data": Object {
+    "addPost1": Object {
+      "code": 0,
+      "message": "add post success",
+    },
+    "addPost2": Object {
+      "code": 0,
+      "message": "add post success",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`client batching query mutation #addPost 1`] = `
+Object {
+  "data": Object {
+    "addPost": Object {
+      "code": 0,
+      "message": "add post success",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`client batching query query #userById 1`] = `
+Object {
+  "data": Object {
+    "userById": Object {
+      "userEmail": "Hugh.Abshire@gmail.com",
+      "userNme": "Berniece Hickle",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
