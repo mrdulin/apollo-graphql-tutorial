@@ -7,6 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
+    "dev": "npx ts-node main.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prebuild": "rm -rf dist",
     "copy": "cp ./.env ./dist/architecture-02",

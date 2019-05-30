@@ -2,6 +2,7 @@ import { PostgresSQLDataCource, DataLoader } from '../../datasources';
 import { IUserDataSource } from './userDataSource';
 import { User } from '../../db/models';
 import _ from 'lodash';
+import { sleep } from '../../../util';
 
 class UserDataSourceImpl extends PostgresSQLDataCource implements IUserDataSource {
   private userLoader: DataLoader<string, any>;
@@ -36,7 +37,8 @@ class UserDataSourceImpl extends PostgresSQLDataCource implements IUserDataSourc
 
   // public async findById(id: string) {
   //   const selectFields = this.getSelectFields();
-  //   return this.db('users')
+  //   await sleep(1000);
+  //   return await this.db('users')
   //     .where({ user_id: id })
   //     .select(selectFields)
   //     .get(0);
