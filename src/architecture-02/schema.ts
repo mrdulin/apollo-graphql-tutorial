@@ -6,6 +6,7 @@ import { GraphQLSchemaWithFragmentReplacements } from 'graphql-middleware/dist/t
 import { selectFieldsMiddleware, logMiddleware, traceMiddleware } from './middleware';
 import { CamelizeKeysDirective, typeDefs as CamelizeKeysDirectiveTypeDefs } from './directives/camelizeKeys';
 
+import { typeDefs as CommonTypeDefs } from './modules/common';
 import {
   typeDefs as AddressTypeDefs,
   resolvers as AddressResolvers,
@@ -23,7 +24,7 @@ const rootTypeDefs = gql`
   }
 `;
 const schema = makeExecutableSchema({
-  typeDefs: [rootTypeDefs, UserTypeDefs, AddressTypeDefs, PostTypeDefs, CamelizeKeysDirectiveTypeDefs],
+  typeDefs: [rootTypeDefs, CommonTypeDefs, UserTypeDefs, AddressTypeDefs, PostTypeDefs, CamelizeKeysDirectiveTypeDefs],
   resolvers: [AddressResolvers, UserResolvers, postResolvers],
   logger: {
     log: (message: string | Error) => {

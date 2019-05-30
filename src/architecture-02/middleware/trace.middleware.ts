@@ -14,7 +14,7 @@ const traceMiddleware: IMiddleware = async (
 ) => {
   const resolveTrace = tracer.createChildSpan({ name: info.fieldName });
   resolveTrace.addLabel('operation', info.operation.operation);
-  resolveTrace.addLabel('args', args);
+  resolveTrace.addLabel('args', JSON.stringify(args));
   const res = await resolve(parent, args, context, info);
   resolveTrace.endSpan();
   return res;

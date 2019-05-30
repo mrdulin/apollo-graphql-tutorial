@@ -10,9 +10,19 @@ const typeDefs = gql`
     postAuthor: User
   }
 
+  input PostInput {
+    postTitle: String!
+    postContent: String!
+    postAuthorId: ID!
+  }
+
   extend type Query {
     postById(id: ID!): Post
     posts: [Post]!
+  }
+
+  extend type Mutation {
+    addPost(post: PostInput!): CommonResponse!
   }
 `;
 
