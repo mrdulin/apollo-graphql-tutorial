@@ -21,6 +21,19 @@ class PostDataSourceImpl extends PostgresSQLDataCource implements IPostDataSourc
     `;
     return this.db.raw(sql).get('rows');
   }
+
+  public async insert(post: any) {
+    const postPO = {
+      post_title: post.postTitle,
+      post_content: post.postContent,
+      post_author_id: post.postAuthorId,
+    };
+    return this.db('posts')
+      .insert(postPO)
+      .then(() => {
+        return { code: 0, message: 'insert post done' };
+      });
+  }
 }
 
 export { PostDataSourceImpl };

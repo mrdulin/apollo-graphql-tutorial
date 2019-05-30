@@ -15,6 +15,11 @@ const resolvers: IResolvers = {
       return dataSources.user.findById(source.postAuthorId);
     },
   },
+  Mutation: {
+    addPost: (_, { post }, { dataSources }: IAppContext) => {
+      return dataSources.post.insert(post);
+    },
+  },
 };
 
 export { resolvers };
