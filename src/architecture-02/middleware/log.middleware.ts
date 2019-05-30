@@ -1,5 +1,6 @@
 import { IMiddleware } from 'graphql-middleware';
 import { GraphQLResolveInfo } from 'graphql';
+import { logger } from '../../util';
 
 const logMiddleware: IMiddleware = async (
   // tslint:disable-next-line:ban-types
@@ -10,12 +11,12 @@ const logMiddleware: IMiddleware = async (
   info: GraphQLResolveInfo,
 ) => {
   try {
-    console.log(`[debug]: context: ${info.fieldName}. Input: ${JSON.stringify(args)}`);
+    logger.debug('Input', { context: info.fieldName, arguments: args });
     const res = await resolve(parent, args, context, info);
-    console.log(`[debug]: context: ${info.fieldName}. Output: ${JSON.stringify(res)}`);
+    logger.debug(`Output`, { context: info.fieldName, extra: res });
     return res;
   } catch (e) {
-    console.log(e);
+    logger.error(e);
   }
 };
 

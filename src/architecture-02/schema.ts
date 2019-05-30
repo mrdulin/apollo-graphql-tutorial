@@ -3,7 +3,7 @@ import { mergeDeep } from 'apollo-utilities';
 import { applyMiddleware } from 'graphql-middleware';
 import { GraphQLSchemaWithFragmentReplacements } from 'graphql-middleware/dist/types';
 
-import { selectFieldsMiddleware } from './middleware';
+import { selectFieldsMiddleware, logMiddleware, traceMiddleware } from './middleware';
 import { CamelizeKeysDirective, typeDefs as CamelizeKeysDirectiveTypeDefs } from './directives/camelizeKeys';
 
 import {
@@ -13,7 +13,6 @@ import {
 } from './modules/address';
 import { typeDefs as UserTypeDefs, resolvers as UserResolvers, userMiddlewareTypeMap } from './modules/user';
 import { typeDefs as PostTypeDefs, resolvers as postResolvers } from './modules/post';
-import { logger } from '../util';
 
 const rootTypeDefs = gql`
   type Query {
@@ -36,22 +35,12 @@ const schema = makeExecutableSchema({
   },
 });
 
-const inputDebug = async (resolve, root, args, context, info) => {
-  logger.debug(`INPUT ARGUMENTS: ${JSON.stringify(args)}`);
-  const result = await resolve(root, args, context, info);
-  logger.debug(`RESULT: ${JSON.stringify(result)}`);
-  return result;
-};
-const loggingMiddleware = {
-  Query: inputDebug,
-  Mutation: inputDebug,
-};
-const middlewares = mergeDeep(userMiddlewareTypeMap, addressMiddlewareTypeMap, loggingMiddleware);
+const middlewares = mergeDeep(userMiddlewareTypeMap, addressMiddlewareTypeMap);
 
 const schemaWithMiddleware: GraphQLSchemaWithFragmentReplacements = applyMiddleware(
   schema,
+  traceMiddleware,
   selectFieldsMiddleware,
-  middlewares,
 );
 
 export { schema, schemaWithMiddleware };
