@@ -51,7 +51,7 @@ async function createServer(options: IServerOptions): Promise<http.Server> {
     engine: {
       apiKey: credentials.APOLLO_ENGINE_API_KEY,
     },
-    tracing: true,
+    tracing: false,
   });
 
   apolloServer.applyMiddleware({ app, path: GRAPHQL_ENDPOINT });
