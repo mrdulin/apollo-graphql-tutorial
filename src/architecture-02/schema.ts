@@ -13,6 +13,7 @@ import {
 } from './modules/address';
 import { typeDefs as UserTypeDefs, resolvers as UserResolvers, userMiddlewareTypeMap } from './modules/user';
 import { typeDefs as PostTypeDefs, resolvers as postResolvers } from './modules/post';
+import { logger } from '../util';
 
 const rootTypeDefs = gql`
   type Query {
@@ -22,7 +23,6 @@ const rootTypeDefs = gql`
     root: String
   }
 `;
-const middlewares = mergeDeep(userMiddlewareTypeMap, addressMiddlewareTypeMap);
 const schema = makeExecutableSchema({
   typeDefs: [rootTypeDefs, UserTypeDefs, AddressTypeDefs, PostTypeDefs, CamelizeKeysDirectiveTypeDefs],
   resolvers: [AddressResolvers, UserResolvers, postResolvers],
@@ -35,6 +35,18 @@ const schema = makeExecutableSchema({
     camelizeKeys: CamelizeKeysDirective,
   },
 });
+
+const inputDebug = async (resolve, root, args, context, info) => {
+  logger.debug(`INPUT ARGUMENTS: ${JSON.stringify(args)}`);
+  const result = await resolve(root, args, context, info);
+  logger.debug(`RESULT: ${JSON.stringify(result)}`);
+  return result;
+};
+const loggingMiddleware = {
+  Query: inputDebug,
+  Mutation: inputDebug,
+};
+const middlewares = mergeDeep(userMiddlewareTypeMap, addressMiddlewareTypeMap, loggingMiddleware);
 
 const schemaWithMiddleware: GraphQLSchemaWithFragmentReplacements = applyMiddleware(
   schema,
