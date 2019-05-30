@@ -1,5 +1,7 @@
-import { ApolloServer, ServerInfo } from 'apollo-server';
+import { ApolloServer } from 'apollo-server-express';
 import { DataSources } from 'apollo-server-core/dist/graphqlOptions';
+import express from 'express';
+import http from 'http';
 
 import {
   schemaWithMiddleware,
@@ -11,8 +13,7 @@ import {
 import { ContextFunction } from 'apollo-server-core';
 import { credentials } from './credentials';
 import { IPostDataSource, PostDataSourceImpl } from './modules/post';
-
-const PORT = process.env.PORT || '3000';
+import { logger } from '../util';
 
 interface IAppContext {
   dataSources: {
@@ -22,34 +23,50 @@ interface IAppContext {
   };
 }
 
-const contextFunction: ContextFunction = ({ req }) => {
-  return {
-    request: req,
+interface IServerOptions {
+  PORT: string | number;
+  GRAPHQL_ENDPOINT: string;
+}
+
+async function createServer(options: IServerOptions): Promise<http.Server> {
+  const { PORT, GRAPHQL_ENDPOINT } = options;
+  const app = express();
+  const httpServer = http.createServer(app);
+
+  const contextFunction: ContextFunction = ({ req }) => {
+    return {
+      request: req,
+    };
   };
-};
 
-const server = new ApolloServer({
-  schema: schemaWithMiddleware,
-  introspection: true,
-  dataSources: (): DataSources<IAppContext> => ({
-    address: new AddressDataSourceImpl(),
-    user: new UserDataSourceImpl(),
-    post: new PostDataSourceImpl(),
-  }),
-  context: contextFunction,
-  engine: {
-    apiKey: credentials.APOLLO_ENGINE_API_KEY,
-  },
-});
-
-server
-  .listen(PORT)
-  .then(({ url }: ServerInfo) => {
-    console.log(`🚀 Server ready at ${url}`);
-  })
-  .catch((error) => {
-    console.error('Create server failed.');
-    console.error(error);
+  const apolloServer = new ApolloServer({
+    schema: schemaWithMiddleware,
+    introspection: true,
+    dataSources: (): DataSources<IAppContext> => ({
+      address: new AddressDataSourceImpl(),
+      user: new UserDataSourceImpl(),
+      post: new PostDataSourceImpl(),
+    }),
+    context: contextFunction,
+    engine: {
+      apiKey: credentials.APOLLO_ENGINE_API_KEY,
+    },
   });
 
-export { IAppContext };
+  apolloServer.applyMiddleware({ app, path: GRAPHQL_ENDPOINT });
+
+  return new Promise((resolve, reject) => {
+    httpServer
+      .listen(PORT)
+      .on('listening', () => {
+        logger.info(`🚀 Http Server ready at http://localhost:${PORT}`);
+        logger.info(`🚀 GraphQL Server ready at http://localhost:${PORT}${GRAPHQL_ENDPOINT}`);
+        resolve(httpServer);
+      })
+      .on('error', (error) => {
+        reject(error);
+      });
+  });
+}
+
+export { IAppContext, createServer };

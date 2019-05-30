@@ -18,8 +18,8 @@ function loadEnv(): EnvVars {
     throw dotenvConfigOutput.error;
   }
   const envVars: EnvVars = {
-    SQL_HOST: '',
-    SQL_PORT: '',
+    SQL_HOST: '127.0.0.1',
+    SQL_PORT: '5432',
     SQL_DATABASE: '',
     SQL_USER: '',
     SQL_PASSWORD: '',

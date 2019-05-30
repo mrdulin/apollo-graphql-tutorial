@@ -11,7 +11,7 @@ class PostgreSQLConnector implements IConnector<DB> {
       client: 'pg',
       connection: {
         host: credentials.SQL_HOST,
-        port: credentials.SQL_PORT,
+        port: Number.parseInt(credentials.SQL_PORT, 10),
         database: credentials.SQL_DATABASE,
         user: credentials.SQL_USER,
         password: credentials.SQL_PASSWORD,
