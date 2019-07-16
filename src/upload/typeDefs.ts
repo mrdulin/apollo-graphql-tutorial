@@ -7,12 +7,17 @@ const typeDefs = gql`
     encoding: String!
   }
 
+  type CommonResponse {
+    code: Int!
+    message: String!
+  }
+
   type Query {
     uploads: [File]
   }
 
   type Mutation {
-    singleUpload(file: Upload!): File!
+    singleUpload(file: Upload!): CommonResponse!
   }
 `;
 
