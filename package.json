@@ -61,6 +61,7 @@
   "dependencies": {
     "@google-cloud/trace-agent": "^3.6.1",
     "apollo-datasource": "^0.4.0",
+    "apollo-link-http": "^1.5.15",
     "apollo-server": "^2.5.0",
     "apollo-server-express": "^2.5.0",
     "dataloader": "^1.4.0",
