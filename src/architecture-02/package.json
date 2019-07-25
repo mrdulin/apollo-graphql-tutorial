@@ -7,13 +7,13 @@
     "doc": "docs"
   },
   "scripts": {
-    "dev": "npx ts-node main.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prebuild": "rm -rf dist",
+    "dev": "npm run build && npm start",
+    "prebuild": "npm run clean",
     "copy": "cp ./.env ./dist/architecture-02",
     "build": "../../node_modules/.bin/tsc -p .",
     "postbuild": "npm run copy",
-    "start": "node ./dist/architecture-02/main.js"
+    "start": "node ./dist/architecture-02/main.js",
+    "clean": "rm -rf ./dist"
   },
   "keywords": [],
   "author": "mrdulin <novaline.dulin@gmail.com>",

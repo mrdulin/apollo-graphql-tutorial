@@ -40,7 +40,7 @@ const middlewares = mergeDeep(userMiddlewareTypeMap, addressMiddlewareTypeMap);
 
 const schemaWithMiddleware: GraphQLSchemaWithFragmentReplacements = applyMiddleware(
   schema,
-  traceMiddleware,
+  // traceMiddleware,
   selectFieldsMiddleware,
 );
 

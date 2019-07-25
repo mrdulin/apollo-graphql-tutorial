@@ -48,9 +48,9 @@ async function createServer(options: IServerOptions): Promise<http.Server> {
       post: new PostDataSourceImpl(),
     }),
     context: contextFunction,
-    engine: {
-      apiKey: credentials.APOLLO_ENGINE_API_KEY,
-    },
+    // engine: {
+    //   apiKey: credentials.APOLLO_ENGINE_API_KEY,
+    // },
     tracing: false,
   });
 
