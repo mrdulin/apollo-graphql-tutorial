@@ -19,20 +19,28 @@ class UserDataSourceImpl extends PostgresSQLDataCource implements IUserDataSourc
     return this.db('users').whereIn('user_id', ids);
   }
 
+  /**
+   * lodash.memoize batching and caching
+   *
+   * @author dulin
+   * @param {string} id
+   * @returns
+   * @memberof UserDataSourceImpl
+   */
   public async findById(id: string) {
-    this.ids.push(id);
-    return new Promise((resolve, reject) => {
-      process.nextTick(() => {
-        this.userLoaderLodash(this.ids).then((users: any[]) => {
-          resolve(_.first(users));
-        });
-      });
-    }).then((user) => {
-      this.ids = [];
-      return user;
-    });
+    // this.ids.push(id);
+    // return new Promise((resolve, reject) => {
+    //   process.nextTick(() => {
+    //     this.userLoaderLodash(this.ids).then((users: any[]) => {
+    //       resolve(_.first(users));
+    //     });
+    //   });
+    // }).then((user) => {
+    //   this.ids = [];
+    //   return user;
+    // });
 
-    // return this.userLoader.load(id);
+    return this.userLoader.load(id);
   }
 
   // public async findById(id: string) {
@@ -41,6 +49,22 @@ class UserDataSourceImpl extends PostgresSQLDataCource implements IUserDataSourc
   //   return await this.db('users')
   //     .where({ user_id: id })
   //     .select(selectFields)
+  //     .get(0);
+  // }
+
+  /**
+   * knex raw query for testing cloud trace
+   *
+   * @author dulin
+   * @param {string} id
+   * @returns
+   * @memberof UserDataSourceImpl
+   */
+  // public async findById(id: string) {
+  //   const query = `select * from users where user_id = ?`;
+  //   return await this.db
+  //     .raw(query, [id])
+  //     .get('rows')
   //     .get(0);
   // }
 
