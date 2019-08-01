@@ -1,5 +1,6 @@
 import knex from 'knex';
 import humps from 'humps';
+import { logger } from '../utils';
 
 import '../config/env';
 
@@ -21,11 +22,17 @@ const config: knex.Config = {
     max: 10,
   },
   debug: process.env.NODE_ENV !== 'production',
+  wrapIdentifier: (value, origImpl, queryContext) => {
+    logger.debug(`[wrapIdentifier] value = ${value}`);
+    const identifier = origImpl(humps.decamelize(value));
+    logger.debug(`[wrapIdentifier] identifier = ${identifier}`);
+    return identifier;
+  },
   postProcessResponse: (result, queryContext) => {
     if (result.rows) {
       return humps.camelizeKeys(result);
     }
-    console.log('[postProcessResponse] result = ', JSON.stringify(result));
+    logger.debug(result, { context: 'postProcessResponse' });
     return humps.camelizeKeys(result);
   },
 };

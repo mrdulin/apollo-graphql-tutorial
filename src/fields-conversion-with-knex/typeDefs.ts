@@ -17,9 +17,25 @@ const typeDefs = gql`
     postAuthor: User
   }
 
+  input PostInput {
+    postTitle: String!
+    postContent: String!
+    postTags: [TagInput]
+    postAuthorId: ID!
+  }
+
+  input TagInput {
+    tagNme: String!
+  }
+
   type Tag {
     tagId: ID!
     tagNme: String!
+  }
+
+  type CommonResponse {
+    code: Int!
+    message: String!
   }
 
   type Query {
@@ -27,6 +43,10 @@ const typeDefs = gql`
 
     post(id: ID!): Post
     posts: [Post]!
+  }
+
+  type Mutation {
+    post(postInput: PostInput!): CommonResponse
   }
 `;
 

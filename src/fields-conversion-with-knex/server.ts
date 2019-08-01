@@ -2,6 +2,7 @@ import { ApolloServer, ServerInfo } from 'apollo-server';
 import { typeDefs } from './typeDefs';
 import { resolvers } from './resolvers';
 import { knex } from './db/knex';
+import { logger } from './utils';
 
 function createApolloServer(): Promise<ApolloServer> {
   const PORT = process.env.PORT || 3000;
@@ -11,7 +12,7 @@ function createApolloServer(): Promise<ApolloServer> {
     apolloServer
       .listen(PORT)
       .then(({ url }: ServerInfo) => {
-        console.log(`🚀 Server ready at ${url}`);
+        logger.info(`🚀 Server ready at ${url}`);
         resolve(apolloServer);
       })
       .catch((error) => {
