@@ -4,20 +4,14 @@ import { IPostInput } from './interfaces/modules/post/postInput';
 import { Transaction } from 'knex';
 
 const resolvers: IResolvers = {
+  User: {
+    userPosts: (user, _, { PostLoader }) => {
+      return PostLoader.userPosts.load(user.userId);
+    },
+  },
   Post: {
-    postAuthor: (post, _, { knex }) => {
-      const sql = `
-        select 
-          u.* 
-        from posts as p
-        inner join users as u using(user_id)
-        where p.post_id = ?;
-      `;
-      console.log('[postAuthor] post: ', JSON.stringify(post, null, 2));
-      return knex
-        .raw(sql, [post.postId])
-        .get('rows')
-        .get(0);
+    postAuthor: (post, _, { PostLoader }) => {
+      return PostLoader.postAuthor.load(post.postId);
     },
     postTags: (post, _, { knex }) => {
       const sql = `

@@ -3,10 +3,12 @@ import { typeDefs } from './typeDefs';
 import { resolvers } from './resolvers';
 import { knex } from './db/knex';
 import { logger } from './utils';
+import { PostLoader } from './modules/Post';
 
 function createApolloServer(): Promise<ApolloServer> {
   const PORT = process.env.PORT || 3000;
-  const apolloServer = new ApolloServer({ typeDefs, resolvers, context: { knex } });
+
+  const apolloServer = new ApolloServer({ typeDefs, resolvers, context: { knex, PostLoader } });
 
   return new Promise((resolve, reject) => {
     apolloServer
