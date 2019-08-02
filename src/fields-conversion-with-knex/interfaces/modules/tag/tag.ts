@@ -1,8 +1,8 @@
 import { ID } from '../../common/types';
 
-interface ITag {
+interface ITagEntity {
   tagId: ID;
   tagNme: string;
 }
 
-export { ITag };
+export { ITagEntity };

@@ -2,6 +2,7 @@ import { IResolvers } from 'apollo-server';
 import { IAppContext } from './interfaces/apollo-server/context';
 import { IPostInput } from './interfaces/modules/post/postInput';
 import { Transaction } from 'knex';
+import { ID } from './interfaces/common/types';
 
 const resolvers: IResolvers = {
   User: {
@@ -13,15 +14,8 @@ const resolvers: IResolvers = {
     postAuthor: (post, _, { PostLoader }) => {
       return PostLoader.postAuthor.load(post.postId);
     },
-    postTags: (post, _, { knex }) => {
-      const sql = `
-        select 
-          t.*
-        from posts as p
-        right join tags as t using(post_id)
-        where p.post_id = ?;
-      `;
-      return knex.raw(sql, [post.postId]).get('rows');
+    postTags: (post, _, { PostLoader }) => {
+      return PostLoader.postTags.load(post.postId);
     },
   },
   Query: {
@@ -32,9 +26,12 @@ const resolvers: IResolvers = {
         .get('rows')
         .get(0);
     },
-    posts: (_, __, { knex }) => {
-      const sql = `select * from posts`;
-      return knex.raw(sql).get('rows');
+    posts: (_, { ids }: { ids?: ID[] }, { knex }: IAppContext) => {
+      const query = knex('posts').select();
+      if (ids) {
+        query.whereIn('post_id', ids);
+      }
+      return query;
     },
     post: (_, { id }, { knex }: IAppContext) => {
       return knex('posts')

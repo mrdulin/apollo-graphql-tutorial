@@ -29,10 +29,10 @@ const config: knex.Config = {
     return identifier;
   },
   postProcessResponse: (result, queryContext) => {
+    logger.debug(result, { context: 'postProcessResponse' });
     if (result.rows) {
       return humps.camelizeKeys(result);
     }
-    logger.debug(result, { context: 'postProcessResponse' });
     return humps.camelizeKeys(result);
   },
 };

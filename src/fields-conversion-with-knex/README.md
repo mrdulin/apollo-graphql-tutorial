@@ -35,3 +35,9 @@ dotenvConfigOutput:  {
 Using environment: development
 Created seed file: /Users/ldu020/workspace/github.com/mrdulin/apollo-graphql-tutorial/src/fields-conversion-with-knex/db/seeds/initialize_db.ts
 ```
+
+start
+
+```bash
+npx ts-node main.ts
+```
