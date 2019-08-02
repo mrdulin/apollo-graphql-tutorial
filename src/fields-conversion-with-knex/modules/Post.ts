@@ -40,9 +40,19 @@ const Post = {
   },
 };
 
+interface IPostLoader {
+  postAuthor: Dataloader<ID, object>;
+  userPosts: Dataloader<ID, object[]>;
+  postTags: Dataloader<ID, ITagEntity[]>;
+}
+
 const PostLoader = {
-  postAuthor: new Dataloader<ID, any>(Post.findUserByIds),
-  userPosts: new Dataloader<ID, any[]>((keys) =>
+  postAuthor: new Dataloader<ID, object>((keys) =>
+    Post.findUserByIds(keys).then((rs) => {
+      return keys.map((key) => rs.find((r) => r.postId === key));
+    }),
+  ),
+  userPosts: new Dataloader<ID, object[]>((keys) =>
     Post.findByUserIds(keys).then((rs) => {
       const dataSet = keys.map((key) => _.groupBy(rs, 'userId')[key]);
       return dataSet;
@@ -79,4 +89,4 @@ function groupMap(collection: any[], keys: ID[], iteratee: string | number, defa
   return dataSet;
 }
 
-export { Post, PostLoader };
+export { Post, PostLoader, IPostLoader };

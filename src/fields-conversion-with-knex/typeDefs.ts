@@ -6,6 +6,7 @@ const typeDefs = gql`
     userNme: String
     userEmail: String!
     userPosts: [Post]!
+    userFriends: [User]!
   }
 
   type Post {

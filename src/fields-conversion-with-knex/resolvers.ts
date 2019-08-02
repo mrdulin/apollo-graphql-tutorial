@@ -6,15 +6,18 @@ import { ID } from './interfaces/common/types';
 
 const resolvers: IResolvers = {
   User: {
-    userPosts: (user, _, { PostLoader }) => {
+    userPosts: (user, _, { PostLoader }: IAppContext) => {
       return PostLoader.userPosts.load(user.userId);
+    },
+    userFriends: (user, _, { UserLoader }: IAppContext) => {
+      return UserLoader.userFriends.loadMany(user.friendIds);
     },
   },
   Post: {
-    postAuthor: (post, _, { PostLoader }) => {
+    postAuthor: (post, _, { PostLoader }: IAppContext) => {
       return PostLoader.postAuthor.load(post.postId);
     },
-    postTags: (post, _, { PostLoader }) => {
+    postTags: (post, _, { PostLoader }: IAppContext) => {
       return PostLoader.postTags.load(post.postId);
     },
   },
