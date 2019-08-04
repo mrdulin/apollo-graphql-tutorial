@@ -3,6 +3,7 @@ import { IAppContext } from './interfaces/apollo-server/context';
 import { IPostInput } from './interfaces/modules/post/postInput';
 import { Transaction } from 'knex';
 import { ID } from './interfaces/common/types';
+import { logger } from '../util';
 
 const resolvers: IResolvers = {
   User: {
@@ -11,6 +12,9 @@ const resolvers: IResolvers = {
     },
     userFriends: (user, _, { UserLoader }: IAppContext) => {
       return UserLoader.userFriends.loadMany(user.userFriendIds);
+    },
+    userFullNme: (user, _) => {
+      return user.userFirstNme + ' ' + user.userLastNme;
     },
   },
   Post: {
@@ -22,12 +26,14 @@ const resolvers: IResolvers = {
     },
   },
   Query: {
-    user: (_, { id }, { knex }) => {
+    user: async (_, { id }, { knex }) => {
       const sql = `select * from users where user_id = ?;`;
-      return knex
+      const record = await knex
         .raw(sql, [id])
         .get('rows')
         .get(0);
+      logger.debug('record', { arguments: { record } });
+      return record;
     },
     posts: (_, { ids }: { ids?: ID[] }, { knex }: IAppContext) => {
       const query = knex('posts').select();

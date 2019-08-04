@@ -7,6 +7,8 @@ export async function up(knex: Knex): Promise<any> {
     t.string('user_email', 50)
       .unique()
       .notNullable();
+    t.string('user_first_nme', 50);
+    t.string('user_last_nme', 50);
     t.specificType('user_friend_ids', 'INTEGER[]');
   });
 

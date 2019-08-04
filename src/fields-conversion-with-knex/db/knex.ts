@@ -12,7 +12,7 @@ const connection = {
   password: process.env.SQL_PASSWORD || '',
   ssl: process.env.SQL_SSL === 'true' ? true : false,
 };
-console.log('db connection config: ', JSON.stringify(connection, null, 2));
+logger.debug('db connection config: ', { arguments: { connection } });
 
 const config: knex.Config = {
   client: 'pg',
