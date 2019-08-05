@@ -19,7 +19,7 @@ interface IUserLoader {
   userFriends: Dataloader<ID, object[]>;
 }
 
-const UserLoader = {
+const UserLoader: IUserLoader = {
   userFriends: new Dataloader<ID, object[]>((keys) =>
     User.findByIds(keys).then((rs) => {
       return keys.map((key) => rs.find((r) => r.userId === key));

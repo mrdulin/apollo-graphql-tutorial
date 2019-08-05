@@ -10,7 +10,7 @@ const resolvers: IResolvers = {
       return PostLoader.userPosts.load(user.userId);
     },
     userFriends: (user, _, { UserLoader }: IAppContext) => {
-      return UserLoader.userFriends.loadMany(user.friendIds);
+      return UserLoader.userFriends.loadMany(user.userFriendIds);
     },
   },
   Post: {

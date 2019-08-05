@@ -9,7 +9,8 @@ const Post = {
   async findUserByIds(ids: ID[]) {
     const sql = `
       select 
-        u.* 
+        u.*,
+        p.post_id
       from posts as p
       inner join users as u using(user_id)
       where p.post_id in (${mapToBindings(ids)});
@@ -46,7 +47,7 @@ interface IPostLoader {
   postTags: Dataloader<ID, ITagEntity[]>;
 }
 
-const PostLoader = {
+const PostLoader: IPostLoader = {
   postAuthor: new Dataloader<ID, object>((keys) =>
     Post.findUserByIds(keys).then((rs) => {
       return keys.map((key) => rs.find((r) => r.postId === key));

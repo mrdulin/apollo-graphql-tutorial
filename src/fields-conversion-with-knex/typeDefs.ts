@@ -42,7 +42,6 @@ const typeDefs = gql`
 
   type Query {
     user(id: ID!): User
-
     post(id: ID!): Post
     posts(ids: [ID!]): [Post]!
   }

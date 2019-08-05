@@ -7,7 +7,7 @@ export async function up(knex: Knex): Promise<any> {
     t.string('user_email', 50)
       .unique()
       .notNullable();
-    t.specificType('friend_ids', 'INTEGER[]');
+    t.specificType('user_friend_ids', 'INTEGER[]');
   });
 
   await knex.schema.createTable('posts', (t: Knex.TableBuilder) => {
