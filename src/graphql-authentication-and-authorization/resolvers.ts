@@ -9,7 +9,7 @@ const resolvers: IResolvers = {
     posts: (_, { ids }, { db }) => {
       return db.posts.filter((post) => ids.includes(post.id.toString()));
     },
-    adminUser: (_, __, { db }) => {
+    adminUsers: (_, __, { db }) => {
       return db.users.find((user) => user.role === Role.admin);
     },
     config: () => {

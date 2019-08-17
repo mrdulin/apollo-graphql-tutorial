@@ -3,6 +3,7 @@ import faker from 'faker';
 enum Role {
   admin = 'admin',
   viewer = 'viewer',
+  editor = 'editor',
 }
 
 const db = {

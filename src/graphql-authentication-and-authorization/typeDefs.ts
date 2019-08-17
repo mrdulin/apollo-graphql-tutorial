@@ -4,6 +4,7 @@ const typeDefs = gql`
   enum Role {
     admin
     viewer
+    editor
   }
 
   type User {
@@ -40,7 +41,7 @@ const typeDefs = gql`
     user(id: ID!): User
     posts(ids: [ID!]!): [Post]!
 
-    adminUser: [User]!
+    adminUsers: [User]!
     config: Config
   }
 
