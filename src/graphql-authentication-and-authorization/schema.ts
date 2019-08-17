@@ -5,10 +5,11 @@ import { makeExecutableSchema } from 'graphql-tools';
 import { authMiddleware } from './middleware';
 import { AuthDirective } from './directive';
 import { resolversWIthAuthEnhancer } from './resolversWIthAuthEnhancer';
+import { resolversWithClass } from './resolversWithClass';
 
 const schema = makeExecutableSchema({
   typeDefs,
-  resolvers: resolversWIthAuthEnhancer,
+  resolvers: resolversWithClass,
   // schemaDirectives: {
   //   auth: AuthDirective,
   //   authorized: AuthDirective,
