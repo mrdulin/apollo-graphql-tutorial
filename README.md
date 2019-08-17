@@ -11,3 +11,4 @@ If you are looking for tutorial for Apollo GraphQL version 1.x, please see this 
 ## References
 
 - https://graphql.org/learn/queries/#multiple-fields-in-mutations
+- https://github.com/Shopify/graphql-design-tutorial/blob/master/TUTORIAL.md

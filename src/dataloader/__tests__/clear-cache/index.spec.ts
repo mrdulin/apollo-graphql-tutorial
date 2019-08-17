@@ -50,6 +50,7 @@ describe('UserLoader', () => {
       });
     });
 
+    // TODO: simulate, each await statement executes in a new tick
     it('should load cache data if not clear cache after a mutate', async () => {
       const id = '1';
       const user = await UserLoader.findByIds.load(id);
