@@ -227,7 +227,7 @@
 
   ![](https://raw.githubusercontent.com/mrdulin/pic-bucket-01/master/20190818154947.png)
 
-  `const user = db.users.find((u) => u.id.toString() === token);`语句表示根据用户id查询数据库，获取user。`req.user = user;`语句表示将查询出的user添加到`req`请求对象上，由于``apollo-server`默认做了和express.js框架的集成，所以该`req`请求对象就是express.js提供的`req`。`return { db, req };`语句表示将内存数据库db和`req`对象注入到`context`中并返回。
+  `const user = db.users.find((u) => u.id.toString() === token);`语句表示根据用户id查询数据库，获取user。`req.user = user;`语句表示将查询出的user添加到`req`请求对象上，由于`apollo-server`默认做了和express.js框架的集成，所以该`req`请求对象就是express.js提供的`req`。`return { db, req };`语句表示将内存数据库db和`req`对象注入到`context`中并返回。
 
   `const server = new ApolloServer({ schema, context: contextFunction });` 语句表示实例化apollo server，传入GraphQL Schema和`contextFunction`，`contextFunction`会在每次客户端有请求访问GraphQL web服务时执行一次，因此每次请求的`req`对象都是新的，代表不同的客户端请求。`context`对象会被传入GraphQL的所有resolver函数。我们就可以通过`context`获取内存数据库db和`req`请求对象。
 
