@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server';
 
 const typeDefs = gql`
-  directive @auth(requires: [Role]) on OBJECT | FIELD_DEFINITION
+  directive @auth(requires: [Role]) on FIELD_DEFINITION
 
   enum Role {
     admin

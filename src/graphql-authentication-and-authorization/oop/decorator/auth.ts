@@ -1,7 +1,7 @@
 import { Role } from '../../db';
 import { AuthenticationError } from 'apollo-server';
 
-function authDecoratorFactory(options?: { roles: Role[] }) {
+function AuthDecoratorFactory(options?: { roles: Role[] }) {
   return function authDecorator(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) {
     const orignalFunction = descriptor.value;
     descriptor.value = function(...args: any[]) {
@@ -13,7 +13,7 @@ function authDecoratorFactory(options?: { roles: Role[] }) {
       }
 
       if (options && options.roles) {
-        console.log(`: roles = ${options.roles}, user = ${JSON.stringify(user)}`);
+        console.log(`[authDecorator] roles = ${options.roles}, user = ${JSON.stringify(user)}`);
         if (!options.roles.includes(user.role)) {
           throw new AuthenticationError('no permission');
         }
@@ -24,4 +24,4 @@ function authDecoratorFactory(options?: { roles: Role[] }) {
   };
 }
 
-export { authDecoratorFactory as auth };
+export { AuthDecoratorFactory as auth };

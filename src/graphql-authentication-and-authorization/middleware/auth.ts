@@ -5,7 +5,7 @@ import { AuthenticationError } from 'apollo-server';
 const resolverAuthMap = {
   Query: {
     user: 'viewer:editor:admin',
-    adminUser: 'admin',
+    adminUsers: 'admin',
     config: 'viewer:editor:admin',
   },
   Mutation: {
@@ -30,7 +30,11 @@ const authMiddleware: IMiddleware = async (
     if (role) {
       const roles = role.split(':');
       const { user } = context.req;
-      console.log(info.fieldName, `: role = ${role}, user = ${JSON.stringify(user)}`);
+      console.log(
+        `[authMiddleware] parentType.name: ${info.parentType.name}, fieldName: ${
+          info.fieldName
+        }, role = ${role}, user = ${JSON.stringify(user)}`,
+      );
       if (!user || !roles.includes(user.role)) {
         throw new AuthenticationError('no permission');
       }

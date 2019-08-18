@@ -3,7 +3,8 @@ import { Role } from './db';
 
 const resolvers: IResolvers = {
   Query: {
-    user: (_, { id }, { db }) => {
+    user: (_, { id }, { db, req, authService }) => {
+      authService.auth(req.user);
       return db.users.find((user) => user.id.toString() === id);
     },
     posts: (_, { ids }, { db }) => {

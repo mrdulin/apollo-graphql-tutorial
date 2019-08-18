@@ -19,7 +19,6 @@ class AuthDirective extends SchemaDirectiveVisitor {
     objectType._authFieldsWrapped = true;
 
     const fields = objectType.getFields();
-
     Object.keys(fields).forEach((fieldName) => {
       const field = fields[fieldName];
       const { resolve = defaultFieldResolver } = field;
@@ -28,14 +27,14 @@ class AuthDirective extends SchemaDirectiveVisitor {
         if (!roles) {
           return resolve.apply(this, args);
         }
-
         const context = args[2];
         const { user } = context.req;
-        console.log(`roles = ${roles.join(':')}, user = ${JSON.stringify(user)}`);
+        console.log(
+          `[AuthDirective] fieldName: ${fieldName}, roles = ${roles.join(':')}, user = ${JSON.stringify(user)}`,
+        );
         if (!user || !roles.includes(user.role)) {
           throw new AuthenticationError('no permission');
         }
-
         return resolve.apply(this, args);
       };
     });
