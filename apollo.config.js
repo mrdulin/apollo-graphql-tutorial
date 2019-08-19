@@ -3,8 +3,8 @@ module.exports = {
     endpoint: {
       url: 'http://localhost:3000/',
       headers: {
-        authorization: 'Bearer ZOWI'
-      }
-    }
-  }
+        authorization: 'Bearer ZOWI',
+      },
+    },
+  },
 };
