@@ -1,24 +1,36 @@
 import Dataloader from 'dataloader';
 import { User } from './user';
+import { IUser } from '../../db';
 
 const UserLoader = {
-  findByIds: new Dataloader<string, any>((keys) => {
-    console.log(`UserLoader.findByIds keys = ${JSON.stringify(keys)}`);
-    return User.findByIds(keys).then((datas) => {
-      console.log(`UserLoader.findByIds datas = ${JSON.stringify(datas)}`);
-      return datas;
-    });
-  }),
+  findByIds: () => {
+    const loadCalls: any[] = [];
+    const cacheMap = new Map();
+    const loader = new Dataloader<number, IUser | undefined>(
+      (keys) => {
+        loadCalls.push(keys);
+        return User.findByIds(keys);
+      },
+      { cacheMap },
+    );
+
+    function getCache() {
+      const cache = {};
+      for (const [key, val] of cacheMap.entries()) {
+        cache[key] = val;
+      }
+      return cache;
+    }
+
+    return { loader, loadCalls, getCache };
+  },
 };
 
 const UserLoaderWithoutCaching = {
-  findByIds: new Dataloader<string, any>(
+  findByIds: new Dataloader<number, IUser | undefined>(
     (keys) => {
       console.log(`UserLoaderWithoutCaching.findByIds keys = ${JSON.stringify(keys)}`);
-      return User.findByIds(keys).then((datas) => {
-        console.log(`UserLoaderWithoutCaching.findByIds datas = ${JSON.stringify(datas)}`);
-        return datas;
-      });
+      return User.findByIds(keys);
     },
     {
       cache: false,
