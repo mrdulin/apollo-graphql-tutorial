@@ -513,27 +513,121 @@
 
   **3. 使用组合Resolver**
 
-  待更新...
+  通过编写组合函数`combineResolvers`，可以组合多个resolver，最后返回一个resolver，这些resolver会使用相同的参数依次被调用，直到某个resolver函数的返回值不是`undefined`，该返回值会被立即返回，排在该resolver后面的resolver函数将被忽略。`combineResolvers`实现如下：
 
+  ```typescript
+import { IFieldResolver } from 'graphql-tools';
+  
+export const skip = undefined;
+  
+export const combineResolvers = (...funcs: Array<IFieldResolver<any, any>>): IFieldResolver<any, any> => (...args) =>
+    funcs.reduce(
+    (prevPromise, resolver) => prevPromise.then((prev) => (prev === skip ? resolver(...args) : prev)),
+      Promise.resolve(),
+    );
+  ```
+  
+  改造后的resolver如下：
+  
+  ```typescript
+  import { IResolvers } from 'apollo-server';
+  import { Role } from './db';
+  import { combineResolvers, isAuthenticated, isAuthorized } from './fp';
+  import { defaultFieldResolver } from 'graphql';
+  
+  const resolversWIthCombineResolvers: IResolvers = {
+    Query: {
+      user: combineResolvers(
+        isAuthenticated,
+        isAuthorized([Role.admin, Role.editor, Role.viewer]),
+        (_, { id }, { db }) => {
+          return db.users.find((user) => user.id.toString() === id);
+        },
+      ),
+      posts: (_, { ids }, { db }) => {
+        return db.posts.filter((post) => ids.includes(post.id.toString()));
+      },
+      adminUsers: combineResolvers(isAuthenticated, isAuthorized([Role.admin]), (_, __, { db }) => {
+        return db.users.find((user) => user.role === Role.admin);
+      }),
+      config: combineResolvers(isAuthenticated, isAuthorized([Role.admin, Role.editor, Role.viewer]), () => {
+        return { url: 'https://github.com/mrdulin' };
+      }),
+    },
+    Mutation: {
+      createPost: combineResolvers(isAuthenticated, isAuthorized([Role.admin]), (_, { input }, { db }) => {
+        const post = {
+        id: db.posts.length,
+          ...input,
+      };
+        db.posts.push(post);
+      return { code: 0, message: 'ok' };
+      }),
+  
+      createUser: combineResolvers(isAuthenticated, isAuthorized([Role.admin]), (_, { input }, { db }) => {
+        const user = {
+          id: db.users.length,
+          ...input,
+        };
+        db.users.push(user);
+        return { code: 0, message: 'ok' };
+      }),
+    },
+  
+    User: {
+      bitcoinAddress: combineResolvers(isAuthenticated, isAuthorized([Role.admin]), defaultFieldResolver),
+    },
+  
+    Post: {
+      author: (post, _, { db }) => {
+        return db.users.find((user) => user.id === post.authorId);
+      },
+    },
+  };
+  
+  export { resolversWIthCombineResolvers };
+  
+  ```
+
+  
+
+  `isAuthenticated` resolver函数用来判断进行用户认证，`isAuthorized` resolver函数用来进行用户权限校验。
+  
+  ```typescript
+  import { AuthenticationError } from 'apollo-server';
+  import { Role } from '../db';
+  import { skip } from './';
+  
+  const isAuthenticated = (_, __, { req }) => (req.user ? skip : new AuthenticationError('Not authenticated'));
+  
+  const isAuthorized = (roles: Role[]) => (_, __, { req }) =>
+    roles.includes(req.user.role) ? skip : new AuthenticationError('Not authorized');
+  
+  export { isAuthenticated, isAuthorized };
+  
+  ```
+  
+  这种方式很像express.js框架中间件的使用方式，这里的`skip`变量就类似于`next()`函数，用来调用下一个中间件。开源社区已经有人写了一些帮助函数，[graphql-resolvers](https://github.com/lucasconstantino/graphql-resolvers)，源码很容易理解。
+  
   **4. 使用Decorator（monkey patch）**
-
+  
   我们可以利用类和装饰器(decorator)的方式，实现用户认证和授权，装饰器模式可以使我们在不侵入原有代码逻辑的情况下，给代码增加额外的功能，拥有良好的可读性，可维护性和可扩展性，代码重用及职责分离。
-
+  
   实现思路：为GraphQL Schema中定义的Object Type，比如`User`, `Post`, `Config`，创建一个单例`Controller`，比如`UserController`，`PostController`，当然叫`Controller`还是其他名称都可以，示例代码主要是参考使用Express.js做开发时，我们给路由定义的路由controller。那么我将resolver作为"路由"层，并为每个"路由"定义controller。
-
+  
   `UserController.ts`
-
+  
   ```typescript
   import { Role } from '../db';
   import { auth } from './decorator';
   import { defaultFieldResolver } from 'graphql';
-  
+
   class UserController {
-    @auth({ roles: [Role.admin, Role.editor, Role.viewer] })
+  @auth({ roles: [Role.admin, Role.editor, Role.viewer] })
     public static user(_, { id }, { db }) {
-      return db.users.find((user) => user.id.toString() === id);
+    return db.users.find((user) => user.id.toString() === id);
     }
-    @auth({ roles: [Role.admin] })
+  @auth({ roles: [Role.admin] })
     public static adminUsers(_, __, { db }) {
       return db.users.find((user) => user.role === Role.admin);
     }
@@ -541,21 +635,21 @@
     public static createUser(_, { input }, { db }) {
       const user = {
         id: db.users.length,
-        ...input,
+      ...input,
       };
-      db.users.push(user);
+    db.users.push(user);
       return { code: 0, message: 'ok' };
-    }
+  }
     @auth({ roles: [Role.admin] })
-    public static bitcoinAddress(_, __, ___) {
+  public static bitcoinAddress(_, __, ___) {
       return defaultFieldResolver;
-    }
-  
-    private constructor() {}
   }
   
+  private constructor() {}
+  }
+
   export { UserController };
-  
+
   ```
 
   在`UserController`类中定义的静态方法命名规则保持和resolver函数要解析的字段名称一致，这里为了简单起见，只定义了controller层，如果项目变大，逻辑变复杂，要使用分层架构，我们可以引入service layer，data access layer等，通过`context`注入到controller的各个方法（实际上就是resolver）中。
@@ -563,23 +657,23 @@
   改造后的resolver如下：
 
   ```typescript
-  import { IResolvers } from 'apollo-server';
+import { IResolvers } from 'apollo-server';
   import { UserController, PostController, ConfigController } from './oop';
-  
+
   const resolversWithClass: IResolvers = {
-    Query: {
+  Query: {
       user: UserController.user,
-      posts: PostController.posts,
+    posts: PostController.posts,
       adminUsers: UserController.adminUsers,
-      config: ConfigController.config,
+    config: ConfigController.config,
     },
-    Mutation: {
+  Mutation: {
       createPost: PostController.createPost,
       createUser: UserController.createUser,
     },
-    Post: {
+  Post: {
       author: PostController.author,
-    },
+  },
     User: {
       bitcoinAddress: UserController.bitcoinAddress,
     },
@@ -588,9 +682,9 @@
   export { resolversWithClass };
   
   ```
-
+  
   装饰器实现如下：
-
+  
   ```typescript
   import { Role } from '../../db';
   import { AuthenticationError } from 'apollo-server';
@@ -621,13 +715,13 @@
   export { AuthDecoratorFactory as auth };
   
   ```
-
+  
   测试结果一样，这里不再给出。
-
+  
   **5. 直接在resolver中加入认证和授权逻辑**
-
+  
   这种方式具有侵入性，不符合开闭原则，如下：
-
+  
   ```typescript
   user: (_, { id }, { db, req, authService }) => {
         authService.auth(req.user);
@@ -635,43 +729,43 @@
       },
   
   ```
-
+  
   `authService.auth(req.user);`语句可能会在每个resolver中都出现，导致代码重复，尽管我们将用户认证和授权逻辑放在`authService.auth`方法中，但调用`authService.auth(req.user);`语句是重复出现在resolver中的，这种方式简单直观，容易理解，没有引入任何技术概念。
-
+  
   ### 总结
-
+  
   使用GraphQL middleware的方式，引入middleware的概念，实质上就是使用中间件函数对GraphQL resolver函数进行包装，遵循洋葱模型，每一个middleware都像是一层洋葱皮包裹着最内层的resolver函数，示意图如下：
-
+  
   ![	](https://raw.githubusercontent.com/mrdulin/pic-bucket-01/master/20190818175728.png)
-
+  
   这种方式的重点在于要设计好中间件，比如方式1代码中的定义的`resolverAuthMap`变量，就是将resolver和访问该resolver需要的用户权限做一个映射，又通过resolver的`info`参数获取到解析的字段名称，这样才建立了映射关系。但是`info`参数，正如apollographql官方文档所描述:
-
+  
   > This argument should only be used in advanced cases
-
+  
   进阶使用，对于一般的日常开发，使用prisma或者apollographql来构建一个GraphQL Web服务，几乎用不到该参数，目前关于如何使用该参数的文档并不多，因此如果要写中间件，特别是复杂的中间件，可能需要对`info`对象进行深入学习了解，并对中间件充分测试，这提升了开发成本。本示例中间件方式的另一个缺点是，在schema，resolver这两层上看不到任何用户权限，需要在`authMiddleware`这个文件才能看到resolver相对应的用户权限，可能不够直观，降低了代码的可读性。
-
   
-
+  
+  
   使用GraphQL Schema Directive方式，相比于方式1在GraphQL resolver这一层上做用户认证和授权，directive将这一功能移动到了GraphQL Schema这一层，通过`@auth`指令直接在schema上标记字段需要的用户权限，很直观。但和使用middleware方式一样，该方案的实现成本可能过高，尽管是GraphQL规格中的一个概念，但目前对于GraphQL Schema Directive的文档也不多，很多技术细节没有交代清楚，对于复杂指令，可能会踩坑。
-
   
-
+  
+  
   使用类+装饰器的方式，优点是没有引入graphql middleware和graphql schema directive的概念，装饰器模式及其技术实现都很成熟，概念也相对容易理解。不过需要将编程范式改为OOP，装饰器只能配合类来使用，如果用FP，实现装饰器的功能需要用高阶函数（high-order function）。
-
-  使用组合式resolver的方式，利用了FP的概念，代码实现也很简单，缺点是会导致resolver代码略显凌乱，可读性变差。
-
   
-
+  使用组合式resolver的方式，利用了FP的概念，代码实现也很简单，缺点是会导致resolver代码略显凌乱，可读性变差。
+  
+  
+  
   ### 示例代码
-
+  
   https://github.com/mrdulin/apollo-graphql-tutorial/tree/master/src/graphql-authentication-and-authorization
-
+  
   ### 参考
-
+  
   - [GraphQL Middleware Use Cases](https://github.com/prisma/graphql-middleware#graphql-middleware-use-cases)
   - [Resolver function signature](https://www.apollographql.com/docs/graphql-tools/resolvers/#resolver-function-signature)
   - [Schema directives](https://www.apollographql.com/docs/graphql-tools/schema-directives/)
-
+  
   ------
-
+  
   <a href="https://info.flagcounter.com/ab0j"><img src="https://s11.flagcounter.com/count2/ab0j/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_12/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a>

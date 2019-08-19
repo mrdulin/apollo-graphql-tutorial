@@ -1,7 +1,10 @@
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { db } from './db';
-import { schema } from './schema';
+import { schema as schemaWIthMiddleware } from './schemaWIthMiddleware';
+import { schema as schemaWithClass } from './schemaWithClass';
+import { schema as schemaWithCombineResolvers } from './schemaWithCombineResolvers';
+import { schema as schemaWithDirective } from './schemaWithDirective';
 import http from 'http';
 
 async function createApolloServer(): Promise<http.Server> {
@@ -16,7 +19,13 @@ async function createApolloServer(): Promise<http.Server> {
     return { db, req };
   }
 
-  const server = new ApolloServer({ schema, context: contextFunction });
+  const server = new ApolloServer({
+    // schema: schemaWIthMiddleware,
+    // schema: schemaWithClass,
+    // schema: schemaWithDirective,
+    schema: schemaWithCombineResolvers,
+    context: contextFunction,
+  });
   server.applyMiddleware({ app, path: '/graphql' });
 
   return new Promise((resolve) => {

@@ -3,7 +3,7 @@ import { Role } from './db';
 import { combineResolvers, isAuthenticated, isAuthorized } from './fp';
 import { defaultFieldResolver } from 'graphql';
 
-const resolversWIthAuthEnhancer: IResolvers = {
+const resolversWIthCombineResolvers: IResolvers = {
   Query: {
     user: combineResolvers(
       isAuthenticated,
@@ -53,4 +53,4 @@ const resolversWIthAuthEnhancer: IResolvers = {
   },
 };
 
-export { resolversWIthAuthEnhancer };
+export { resolversWIthCombineResolvers };
