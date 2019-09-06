@@ -18,8 +18,8 @@ const resolvers: IResolvers = {
     singleUpload: async (_, { file }): Promise<ICommonResponse> => {
       // DeprecationWarning: File upload property ‘stream’ is deprecated. Use ‘createReadStream()’ instead
       const { stream, filename, mimetype, encoding, createReadStream } = await file;
-      console.log('createReadStream:', createReadStream);
-      logger.debug('file', { arguments: { filename, mimetype, encoding, createReadStream } });
+      // console.log('createReadStream:', createReadStream);
+      // logger.debug('file', { arguments: { filename, mimetype, encoding, createReadStream } });
       const w = fs.createWriteStream(path.resolve(__dirname, `./storage/${filename}`));
 
       const r: ReadStream = createReadStream();

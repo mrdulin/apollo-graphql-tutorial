@@ -1,6 +1,6 @@
-import { IMiddleware } from 'graphql-middleware';
 import { GraphQLResolveInfo } from 'graphql';
 import { AuthenticationError } from 'apollo-server';
+import { IMiddlewareResolver } from 'graphql-middleware/dist/types';
 
 const resolverAuthMap = {
   Query: {
@@ -17,7 +17,7 @@ const resolverAuthMap = {
   },
 };
 
-const authMiddleware: IMiddleware = async (
+const authMiddleware: IMiddlewareResolver = async (
   // tslint:disable-next-line: ban-types
   resolve: Function,
   parent: any,

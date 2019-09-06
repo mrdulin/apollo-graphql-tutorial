@@ -10,7 +10,8 @@
     "push-schema": "apollo service:push",
     "prettify": "prettier --config ./.prettierrc --write \"./{src,__{tests,mocks}__}/**/*.{ts,js}\"",
     "prettify-check": "prettier --check \"./{src,__{tests,mocks}__}/**/*.{ts,js}\"",
-    "lint": "tslint --config ./tslint.json --project ./tsconfig.json"
+    "lint": "tslint --config ./tslint.json --project ./tsconfig.json",
+    "coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
