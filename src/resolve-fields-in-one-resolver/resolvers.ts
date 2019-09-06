@@ -8,7 +8,6 @@ const resolvers: IResolvers = {
         const postAuthor = memoryDB.users.find((user) => user.userId === postFound.postAuthorId);
         postFound.postAuthor = postAuthor;
       }
-      console.log(`postFound: ${JSON.stringify(postFound)}`);
       return postFound;
     },
     async posts(_, __, { memoryDB }) {

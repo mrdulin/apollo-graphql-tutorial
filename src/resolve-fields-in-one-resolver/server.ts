@@ -6,6 +6,10 @@ import { resolversBetter } from './resolvers-better';
 
 const server = new ApolloServer({ typeDefs, resolvers: resolversBetter, context: { memoryDB } });
 
-server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  server.listen().then(({ url }) => {
+    console.log(`🚀 Server ready at ${url}`);
+  });
+}
+
+export { server };

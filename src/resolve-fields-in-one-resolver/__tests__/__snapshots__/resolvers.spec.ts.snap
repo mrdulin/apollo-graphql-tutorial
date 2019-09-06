@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`resolve-fields-in-one-resolver resolvers #postById should query post by id with author correctly 1`] = `
+Object {
+  "data": Object {
+    "postById": Object {
+      "postAuthor": Object {
+        "userEmail": "mrdulin@example.com",
+        "userId": "333",
+        "userNme": "mrdulin",
+      },
+      "postCreatedAt": null,
+      "postId": "222",
+      "postTitle": "apollo graphql",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`resolve-fields-in-one-resolver resolvers #postById should query post by id without author correctly, but it will perform a user query from db 1`] = `
+Object {
+  "data": Object {
+    "postById": Object {
+      "postCreatedAt": null,
+      "postId": "222",
+      "postTitle": "apollo graphql",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`resolve-fields-in-one-resolver resolvers #posts should query posts correctly 1`] = `
+Object {
+  "data": Object {
+    "posts": Array [
+      Object {
+        "postAuthor": Object {
+          "userEmail": "mrdulin@example.com",
+          "userId": "333",
+          "userNme": "mrdulin",
+        },
+        "postCreatedAt": null,
+        "postId": "222",
+        "postTitle": "apollo graphql",
+      },
+    ],
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;

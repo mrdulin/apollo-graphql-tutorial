@@ -1,9 +1,10 @@
 import faker from 'faker';
+import { IMemoryDB } from '../types';
 
 const userPK1 = '1';
 const userPK2 = '2';
 
-const memoryDB = {
+const memoryDB: IMemoryDB = {
   users: [
     { userId: userPK1, userNme: faker.name.findName(), userEmail: faker.internet.email() },
     { userId: userPK2, userNme: faker.name.findName(), userEmail: faker.internet.email() },
@@ -24,4 +25,4 @@ const memoryDB = {
   ],
 };
 
-export { memoryDB };
+export { memoryDB, IMemoryDB };

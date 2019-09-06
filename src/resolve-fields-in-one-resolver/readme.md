@@ -2,15 +2,15 @@
 
 基础知识略过，直接进入正题，下面要介绍的`resolver`的两种写法直接关系到性能问题。
 
-先来看下示例的`GraphQL` SDL的ERD:
+先来看下示例的`GraphQL` SDL 的 ERD:
 
 ![resolver-fields-in-one-resolver-visualizer](https://raw.githubusercontent.com/mrdulin/pic-bucket-01/master/resolver-fields-in-one-resolver-visualizer.png)
 
-很常见的数据关系模型，User和Post是一对多的关系，数据库表ERD如下:
+很常见的数据关系模型，User 和 Post 是一对多的关系，数据库表 ERD 如下:
 
 ![](https://raw.githubusercontent.com/mrdulin/pic-bucket-01/master/resolver-fields-in-one-resolver-ERD.png)
 
-`GraphQL` SDL如下：
+`GraphQL` SDL 如下：
 
 ```typescript
   type User {
@@ -32,7 +32,7 @@
   }
 ```
 
-示例使用`memoryDB`内存数据库模拟RDBMS:
+示例使用`memoryDB`内存数据库模拟 RDBMS:
 
 ```typescript
 import faker from 'faker';
@@ -66,7 +66,7 @@ export { memoryDB };
 
 接下来编写`resolver`，有两种写法，我们来对比和分析一下。
 
-### 在一个resolver中解析所有SDL定义的字段
+### 在一个 resolver 中解析所有 SDL 定义的字段
 
 `resolver`如下：
 
@@ -98,7 +98,7 @@ export { resolvers };
 
 可以看到，`postById`这个`resolver`在数据库中根据`id`去`posts`表中查询`post`，查询出`post`后，还根据`post`实体上的`postAuthorId`这个外键去`users`表中查询相应的`user`。同理，`posts`这个`resolver`查询出所有的`post`实体后，遍历所有`post`实体，根据`postAuthorId`外键去`users`表中查询每个`post`实体对应的`user`。
 
-接下来我们在`GraphQL` Playground中编写`GraphQL`客户端查询
+接下来我们在`GraphQL` Playground 中编写`GraphQL`客户端查询
 
 ![postById](https://raw.githubusercontent.com/mrdulin/pic-bucket-01/master/WX20190610-205958.png)
 
@@ -112,7 +112,7 @@ export { resolvers };
 
 同理，客户端查询`posts`，但如果不查询`postAuthor`，然而服务端的`resolver`却给每一个`post`去查询相应的`postAuthor`，这就是很多次的无意义的查询。所以下面介绍官方正确的`resolver`写法：
 
-### 正确的resolver写法
+### 正确的 resolver 写法
 
 ```typescript
 import { IResolvers } from 'graphql-tools';
@@ -153,17 +153,12 @@ resolve Post.postAuthor: 1
 
 https://stackoverflow.com/questions/52272727/resolve-all-fields-in-one-resolver-v-s-resolve-field-in-each-resolver
 
-使用一年多下来，有时候觉得`GraphQL`并不严谨，很多问题官方没有解释的很清楚，比如SDL中定义循环引用的问题，https://stackoverflow.com/questions/53863934/is-graphql-schema-circular-reference-an-anti-pattern。
+使用一年多下来，有时候觉得`GraphQL`并不严谨，很多问题官方没有解释的很清楚，比如 SDL 中定义循环引用的问题，https://stackoverflow.com/questions/53863934/is-graphql-schema-circular-reference-an-anti-pattern。
 
-以及SDL如何设计，`Object` `Type`嵌套层级深度，客户端查询字段如何映射到SQL查询column（SQL语句中查询的column和客户端查询的字段一一对应，不多查column）的问题。此外还需要解决`N+1` query，缓存问题。
+以及 SDL 如何设计，`Object` `Type`嵌套层级深度，客户端查询字段如何映射到 SQL 查询 column（SQL 语句中查询的 column 和客户端查询的字段一一对应，不多查 column）的问题。此外还需要解决`N+1` query，缓存问题。
 
-`apollographql`的一些`GraphQL`模块实现也还处于起步阶段，`apollographql`的服务端上传模块[apollo-upload-server](https://www.npmjs.com/package/@apollographql/apollo-upload-server)和客户端上传模块[apollo-upload-client](https://www.npmjs.com/package/apollo-upload-client)相比于[multer](https://github.com/expressjs/multer)和[jQuery-File-Upload](https://github.com/blueimp/jQuery-File-Upload)，弱太多了，只能满足最基本的上传需求，所以如果对上传功能要求比较高的话，建议使用现有更成熟的方案。对于`apollographql`升级到2.0以后，使用的`dataSource`，目前官方也只给出了`HTTP`通信的`dataSource`实现[apollo-datasource-rest](https://www.apollographql.com/docs/apollo-server/features/data-sources/)，SQL和NoSQL的`dataSource`实现社区里都是一些个人零零散散的实现，对于新手来说，基本等于没有。
-
-
+`apollographql`的一些`GraphQL`模块实现也还处于起步阶段，`apollographql`的服务端上传模块[apollo-upload-server](https://www.npmjs.com/package/@apollographql/apollo-upload-server)和客户端上传模块[apollo-upload-client](https://www.npmjs.com/package/apollo-upload-client)相比于[multer](https://github.com/expressjs/multer)和[jQuery-File-Upload](https://github.com/blueimp/jQuery-File-Upload)，弱太多了，只能满足最基本的上传需求，所以如果对上传功能要求比较高的话，建议使用现有更成熟的方案。对于`apollographql`升级到 2.0 以后，使用的`dataSource`，目前官方也只给出了`HTTP`通信的`dataSource`实现[apollo-datasource-rest](https://www.apollographql.com/docs/apollo-server/features/data-sources/)，SQL 和 NoSQL 的`dataSource`实现社区里都是一些个人零零散散的实现，对于新手来说，基本等于没有。
 
 ### 源码
 
 https://github.com/mrdulin/apollo-graphql-tutorial/tree/master/src/resolve-fields-in-one-resolver
-
-
-

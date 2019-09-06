@@ -44,8 +44,8 @@ exports[`client batching query query #userById 1`] = `
 Object {
   "data": Object {
     "userById": Object {
-      "userEmail": "Hugh.Abshire@gmail.com",
-      "userNme": "Berniece Hickle",
+      "userEmail": "Wyman37@yahoo.com",
+      "userNme": "Kamron Trantow",
     },
   },
   "errors": undefined,
