@@ -7,7 +7,6 @@ function AuthDecoratorFactory(options?: { roles: Role[] }) {
     descriptor.value = function(...args: any[]) {
       const context = args[2];
       const { user } = context.req;
-
       if (!user) {
         throw new AuthenticationError('no permission');
       }
@@ -18,9 +17,9 @@ function AuthDecoratorFactory(options?: { roles: Role[] }) {
           throw new AuthenticationError('no permission');
         }
       }
-
       return orignalFunction.apply(this, args);
     };
+    return descriptor;
   };
 }
 
