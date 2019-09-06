@@ -8,7 +8,15 @@ import { PostLoader, UserLoader } from './modules';
 function createApolloServer(): Promise<ApolloServer> {
   const PORT = process.env.PORT || 3000;
 
-  const apolloServer = new ApolloServer({ typeDefs, resolvers, context: { knex, PostLoader, UserLoader } });
+  const apolloServer = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: { knex, PostLoader, UserLoader },
+    engine: {
+      apiKey: process.env.APOLLO_ENGINE_API_KEY,
+      schemaTag: process.env.ENGINE_SCHEMA_TAG,
+    },
+  });
 
   return new Promise((resolve, reject) => {
     apolloServer
