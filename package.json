@@ -3,7 +3,7 @@
     "node": "=10.16.0"
   },
   "name": "apollo-graphql-tutorial",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Deep into Apollo GraphQL with Node.js",
   "main": "",
   "scripts": {
@@ -16,7 +16,7 @@
     "prettify": "prettier --config ./.prettierrc --write \"./{src,__{tests,mocks}__}/**/*.{ts,js}\"",
     "prettify-check": "prettier --check \"./{src,__{tests,mocks}__}/**/*.{ts,js}\"",
     "lint": "tslint --config ./tslint.json --project ./tsconfig.json",
-    "coverage": "npm t -- --coverage --coverageReporters=text-lcov | coveralls"
+    "coverage": "npm t -- --coverage --coverageReporters=text-lcov --colors | coveralls"
   },
   "repository": {
     "type": "git",
