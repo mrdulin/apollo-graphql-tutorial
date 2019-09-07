@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`upload should get file size limit error 1`] = `
+Object {
+  "data": null,
+  "errors": Array [
+    Object {
+      "extensions": Object {
+        "code": "INTERNAL_SERVER_ERROR",
+        "exception": Object {
+          "message": "File truncated as it exceeds the size limit.",
+        },
+      },
+      "locations": Array [
+        Object {
+          "column": 13,
+          "line": 3,
+        },
+      ],
+      "message": "File truncated as it exceeds the size limit.",
+      "path": Array [
+        "singleUpload",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`upload should upload file correctly with test server 1`] = `
+Object {
+  "data": Object {
+    "singleUpload": Object {
+      "code": 0,
+      "message": "",
+    },
+  },
+}
+`;

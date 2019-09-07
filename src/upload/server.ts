@@ -14,13 +14,9 @@ async function createApolloServer(): Promise<ApolloServerBase> {
     resolvers,
   });
 
-  try {
-    const { url } = await server.listen();
-    console.log(`🚀 Server ready at ${url}`);
-    return server;
-  } catch (error) {
-    throw error;
-  }
+  const { url } = await server.listen();
+  console.log(`🚀 Server ready at ${url}`);
+  return server;
 }
 
 export { createApolloServer };

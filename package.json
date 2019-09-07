@@ -4,8 +4,7 @@
   "description": "Deep into Apollo GraphQL with Node.js",
   "main": "",
   "scripts": {
-    "test": "jest --detectOpenHandles",
-    "snapshot": "jest --updateSnapshot",
+    "test": "jest --detectOpenHandles --silent",
     "watch": "nodemon --watch './src/**/*.ts' --ignore './src/**/*.spec.ts' --exec 'ts-node'",
     "push-schema": "apollo service:push",
     "prettify": "prettier --config ./.prettierrc --write \"./{src,__{tests,mocks}__}/**/*.{ts,js}\"",
@@ -23,7 +22,7 @@
     "GraphQL Subscription",
     "apollo-server"
   ],
-  "author": "",
+  "author": "mrdulin",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/mrdulin/apollo-graphql-tutorial/issues"

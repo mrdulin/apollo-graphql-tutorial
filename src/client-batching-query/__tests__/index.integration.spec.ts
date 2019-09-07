@@ -1,19 +1,12 @@
-import faker from 'faker';
 import { createTestClient } from 'apollo-server-testing';
-import { createApolloServer } from '../server';
 import { gql } from 'apollo-server';
-import { logger } from '../../util';
+import { ApolloServer } from 'apollo-server-express';
+import { resolvers } from '../resolver';
+import { typeDefs } from '../typeDefs';
+import { db } from './mockedDB';
 
-let server;
-let testClient;
-beforeAll(async () => {
-  server = await createApolloServer();
-  testClient = createTestClient(server);
-});
-
-afterAll(async () => {
-  await server.stop();
-});
+const server = new ApolloServer({ typeDefs, resolvers, context: { db } });
+const testClient = createTestClient(server);
 
 describe('client batching query', () => {
   describe('query', () => {
@@ -41,7 +34,7 @@ describe('client batching query', () => {
           }
         }
       `;
-      const post = { postTitle: faker.lorem.sentence(), postContent: faker.lorem.paragraphs(), postAuthorId: 1 };
+      const post = { postTitle: 'stackoverflow', postContent: 'stackoverflow content', postAuthorId: 1 };
       const actualValue = await testClient.mutate({ mutation: ADD_POST, variables: { post } });
       expect(actualValue).toMatchSnapshot();
     });
@@ -60,8 +53,8 @@ describe('client batching query', () => {
         }
       `;
 
-      const post1 = { postTitle: faker.lorem.sentence(), postContent: faker.lorem.paragraphs(), postAuthorId: 1 };
-      const post2 = { postTitle: faker.lorem.sentence(), postContent: faker.lorem.paragraphs(), postAuthorId: 2 };
+      const post1 = { postTitle: 'stackoverflow', postContent: 'stackoverflow content', postAuthorId: 1 };
+      const post2 = { postTitle: 'stackoverflow', postContent: 'stackoverflow content', postAuthorId: 2 };
       const actualValue = await testClient.mutate({ mutation: ADD_POSTS, variables: { post1, post2 } });
       expect(actualValue).toMatchSnapshot();
     });

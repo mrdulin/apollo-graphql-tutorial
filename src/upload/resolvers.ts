@@ -17,19 +17,19 @@ const resolvers: IResolvers = {
   Mutation: {
     singleUpload: async (_, { file }): Promise<ICommonResponse> => {
       // DeprecationWarning: File upload property ‘stream’ is deprecated. Use ‘createReadStream()’ instead
-      const { stream, filename, mimetype, encoding, createReadStream } = await file;
-      // console.log('createReadStream:', createReadStream);
-      // logger.debug('file', { arguments: { filename, mimetype, encoding, createReadStream } });
-      const w = fs.createWriteStream(path.resolve(__dirname, `./storage/${filename}`));
-
-      const r: ReadStream = createReadStream();
-
+      const { filename, mimetype, encoding, createReadStream } = await file;
+      const uploadPath = path.resolve(__dirname, `./storage/${filename}`);
+      const w = fs.createWriteStream(uploadPath);
+      const stream: ReadStream = createReadStream();
+      const response: ICommonResponse = { code: 0, message: '' };
       return new Promise((resolve, reject) => {
-        const response: ICommonResponse = {
-          code: 0,
-          message: '',
-        };
-        r.pipe(w)
+        stream
+          .on('error', (error) => {
+            console.error(error);
+            fs.unlinkSync(uploadPath);
+            reject(error);
+          })
+          .pipe(w)
           .on('error', (error) => {
             logger.error(error);
             response.code = 1;

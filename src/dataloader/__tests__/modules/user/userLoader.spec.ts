@@ -1,7 +1,7 @@
 import { UserLoader } from '../../../modules/user';
 
 describe('UserLoader', () => {
-  describe.skip('#findByIds', () => {
+  describe('#findByIds', () => {
     it('batches multiple requests', async () => {
       const { loader, loadCalls } = UserLoader.findByIds();
       const [a, b] = await Promise.all([loader.load(1), loader.load(2)]);
