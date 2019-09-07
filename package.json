@@ -81,10 +81,5 @@
     "pg": "^7.12.1",
     "subscriptions-transport-ws": "^0.9.16",
     "ws": "^6.2.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && npm run prettify"
-    }
   }
 }
