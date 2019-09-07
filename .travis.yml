@@ -10,8 +10,8 @@ install:
 jobs:
   include:
     - stage: "Tests"
-      name: "Unit Tests"
-      script: yarn test
+      name: "Unit Tests with coverage"
+      script: yarn coverage
     - stage: "Compile"
       script: yarn build
 stages:
