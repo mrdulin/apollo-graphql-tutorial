@@ -9,17 +9,14 @@ class PostDataSourceImpl extends PostgresSQLDataCource implements IPostDataSourc
     const sql = `
       SELECT * FROM posts WHERE post_id = ?
     `;
-    return this.db
-      .raw(sql, [id])
-      .get('rows')
-      .get(0);
+    return this.db.raw(sql, [id]).then((res) => res.rows);
   }
 
   public async find() {
     const sql = `
       SELECT * FROM posts;
     `;
-    return this.db.raw(sql).get('rows');
+    return this.db.raw(sql).then((res) => res.rows);
   }
 
   public async insert(post: any) {
@@ -30,9 +27,7 @@ class PostDataSourceImpl extends PostgresSQLDataCource implements IPostDataSourc
     };
     return this.db('posts')
       .insert(postPO)
-      .then(() => {
-        return { code: 0, message: 'insert post done' };
-      });
+      .then(() => ({ code: 0, message: 'insert post done' }));
   }
 }
 

@@ -1,10 +1,10 @@
 import { ID } from '../../common/types';
-import { ITag } from '../tag/tag';
+import { ITagEntity } from '../tag/tag';
 
 interface IPostInput {
   postTitle: string;
   postContent: string;
-  postTags?: ITag[];
+  postTags?: ITagEntity[];
   postAuthorId: ID;
 }
 

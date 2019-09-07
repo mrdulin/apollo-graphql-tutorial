@@ -5,7 +5,8 @@ import { HttpLink } from 'apollo-link-http';
 import fetch from 'node-fetch';
 import { printSchema } from 'graphql';
 
-const link = new HttpLink({ uri: 'http://localhost:3000', fetch });
+// TODO: https://github.com/apollographql/apollo-link/issues/513
+const link = new HttpLink({ uri: 'http://localhost:3000', fetch: fetch as any });
 
 async function createApolloServer(): Promise<ApolloServerBase> {
   const PORT = process.env.PORT || 3001;
