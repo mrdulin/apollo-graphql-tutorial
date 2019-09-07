@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "=10.16.0"
+  },
   "name": "apollo-graphql-tutorial",
   "version": "1.0.0",
   "description": "Deep into Apollo GraphQL with Node.js",
