@@ -3,15 +3,14 @@ import { Role } from './db';
 
 const resolvers: IResolvers = {
   Query: {
-    user: (_, { id }, { db, req, authService }) => {
-      authService.auth(req.user);
+    user: (_, { id }, { db }) => {
       return db.users.find((user) => user.id.toString() === id);
     },
     posts: (_, { ids }, { db }) => {
       return db.posts.filter((post) => ids.includes(post.id.toString()));
     },
     adminUsers: (_, __, { db }) => {
-      return db.users.find((user) => user.role === Role.admin);
+      return db.users.filter((user) => user.role === Role.admin) || [];
     },
     config: () => {
       return { url: 'https://github.com/mrdulin' };

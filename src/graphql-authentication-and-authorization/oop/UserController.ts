@@ -9,7 +9,7 @@ class UserController {
   }
   @auth({ roles: [Role.admin] })
   public static adminUsers(_, __, { db }) {
-    return db.users.find((user) => user.role === Role.admin);
+    return db.users.filter((user) => user.role === Role.admin) || [];
   }
   @auth({ roles: [Role.admin] })
   public static createUser(_, { input }, { db }) {
