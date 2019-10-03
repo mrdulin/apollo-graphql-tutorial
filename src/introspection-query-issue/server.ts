@@ -1,7 +1,7 @@
 import { ApolloServer, gql, IResolvers } from 'apollo-server-express';
+import { ContextFunction } from 'apollo-server-core';
 import express from 'express';
 import morgan = require('morgan');
-import { ContextFunction } from 'apollo-server-express/node_modules/apollo-server-core';
 
 const app = express();
 const port = 3000;
