@@ -4,12 +4,12 @@ import fetch from 'node-fetch';
 import FormData from 'form-data';
 import fs from 'fs';
 import path from 'path';
-import { logger } from '../../util';
+import { ApolloServerBase } from 'apollo-server-core';
 
 // https://github.com/jaydenseric/graphql-multipart-request-spec
 // https://github.com/jaydenseric/graphql-upload/blob/master/src/test.mjs
 
-let server;
+let server: ApolloServerBase;
 let testClient;
 beforeAll(async () => {
   server = await createApolloServer();
@@ -20,8 +20,12 @@ afterAll(async () => {
   await server.stop();
 });
 
+async function upload(body) {
+  return fetch('http://localhost:4000', { method: 'POST', body }).then((response) => response.json());
+}
+
 describe('upload', () => {
-  it('should upload file correctly', async () => {
+  it('should upload file correctly with test server', async () => {
     const body = new FormData();
     body.append(
       'operations',
@@ -40,24 +44,13 @@ describe('upload', () => {
       }),
     );
 
-    const filename = '15625760447371547012340909WX20190108-124331.png';
     body.append('map', JSON.stringify({ 1: ['variables.file'] }));
-    body.append('1', fs.createReadStream(path.resolve(__dirname, `./files/${filename}`)));
-    const json = await fetch('http://localhost:4000', { method: 'POST', body }).then((response) => response.json());
-    // logger.debug('upload testing#1', { arguments: { json } });
-    expect(json).toEqual(
-      expect.objectContaining({
-        data: {
-          singleUpload: {
-            code: expect.any(Number),
-            message: expect.any(String),
-          },
-        },
-      }),
-    );
+    body.append('1', 'a', { filename: 'a.txt' });
+    const json = await upload(body);
+    expect(json).toMatchSnapshot();
   });
 
-  it.skip('should get file size limit error', async () => {
+  it('should get file size limit error', async () => {
     const body = new FormData();
     body.append(
       'operations',
@@ -76,12 +69,9 @@ describe('upload', () => {
       }),
     );
 
-    const filename = 'graphql-n-plus-1-query.png';
     body.append('map', JSON.stringify({ 1: ['variables.file'] }));
-    body.append('1', fs.createReadStream(path.resolve(__dirname, `./files/${filename}`)));
-    const json = await fetch('http://localhost:4000', { method: 'POST', body }).then((response) => response.json());
-    // logger.debug('upload testing#1', { arguments: { json } });
-    expect(json.data).toBeNull();
-    expect(json.errors[0].message).toBe('File truncated as it exceeds the size limit.');
+    body.append('1', 'b'.repeat(70000), { filename: 'b.txt' });
+    const json = await upload(body);
+    expect(json).toMatchSnapshot();
   });
 });

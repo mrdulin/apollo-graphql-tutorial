@@ -1,0 +1,231 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`auth with middleware Mutation.createPost | required roles: admin no user found 1`] = `
+Object {
+  "data": null,
+  "errors": Array [
+    [GraphQLError: no permission],
+  ],
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`auth with middleware Mutation.createPost | required roles: admin user.role: "admin" 1`] = `
+Object {
+  "data": Object {
+    "createPost": Object {
+      "code": 0,
+      "message": "ok",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`auth with middleware Mutation.createPost | required roles: admin user.role: "editor" 1`] = `
+Object {
+  "data": null,
+  "errors": Array [
+    [GraphQLError: no permission],
+  ],
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`auth with middleware Mutation.createPost | required roles: admin user.role: "viewer" 1`] = `
+Object {
+  "data": null,
+  "errors": Array [
+    [GraphQLError: no permission],
+  ],
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`auth with middleware Query.adminUsers | required roles: admin no user found 1`] = `
+Object {
+  "data": null,
+  "errors": Array [
+    [GraphQLError: no permission],
+  ],
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`auth with middleware Query.adminUsers | required roles: admin user.role: "admin" 1`] = `
+Object {
+  "data": Object {
+    "adminUsers": Array [
+      Object {
+        "email": "elsa@example.com",
+        "id": "2",
+        "name": "elsa",
+        "role": "admin",
+      },
+    ],
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`auth with middleware Query.adminUsers | required roles: admin user.role: "editor" 1`] = `
+Object {
+  "data": null,
+  "errors": Array [
+    [GraphQLError: no permission],
+  ],
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`auth with middleware Query.adminUsers | required roles: admin user.role: "viewer" 1`] = `
+Object {
+  "data": null,
+  "errors": Array [
+    [GraphQLError: no permission],
+  ],
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`auth with middleware Query.user no user found, required auth: "viewer:editor:admin" 1`] = `
+Object {
+  "data": Object {
+    "user": null,
+  },
+  "errors": Array [
+    [GraphQLError: no permission],
+  ],
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`auth with middleware Query.user user.role: "admin", required auth: "viewer:editor:admin" 1`] = `
+Object {
+  "data": Object {
+    "user": Object {
+      "email": "mrdulin@example.com",
+      "id": "1",
+      "name": "mrdulin",
+      "role": "viewer",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`auth with middleware Query.user user.role: "editor", required auth: "viewer:editor:admin" 1`] = `
+Object {
+  "data": Object {
+    "user": Object {
+      "email": "mrdulin@example.com",
+      "id": "1",
+      "name": "mrdulin",
+      "role": "viewer",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`auth with middleware Query.user user.role: "viewer", required auth: "viewer:editor:admin" 1`] = `
+Object {
+  "data": Object {
+    "user": Object {
+      "email": "mrdulin@example.com",
+      "id": "1",
+      "name": "mrdulin",
+      "role": "viewer",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`auth with middleware Query.user user.role: "viewer", required auth: "viewer:editor:admin", bitcoinAddress require auth: "admin" 1`] = `
+Object {
+  "data": Object {
+    "user": Object {
+      "bitcoinAddress": null,
+      "email": "mrdulin@example.com",
+      "id": "1",
+      "name": "mrdulin",
+      "role": "viewer",
+    },
+  },
+  "errors": Array [
+    [GraphQLError: no permission],
+  ],
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;

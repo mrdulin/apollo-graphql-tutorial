@@ -1,6 +1,6 @@
 import { authMiddleware } from '../../middleware';
-import { Role } from '../../db';
 import { AuthenticationError } from 'apollo-server';
+import { context0, context1, context2, context3 } from '../contexts';
 
 describe('graphql-authentication-and-authorization', () => {
   describe('#authMiddleware', () => {
@@ -10,10 +10,6 @@ describe('graphql-authentication-and-authorization', () => {
     const parent = {};
     const args = {};
 
-    const context0 = { req: {} };
-    const context1 = { req: { user: { role: Role.viewer } } };
-    const context2 = { req: { user: { role: Role.editor } } };
-    const context3 = { req: { user: { role: Role.admin } } };
     const info1 = { parentType: { name: 'Query' } };
     const info2 = { parentType: { name: 'Mutation' } };
     const info3 = { parentType: { name: 'User' } };

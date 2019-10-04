@@ -1,5 +1,5 @@
 import { PostgresSQLDataCource, DataLoader } from '../../datasources';
-import { IUserDataSource } from './userDataSource';
+import { IUserDataSource } from './UserDataSource';
 import { User } from '../../db/models';
 import _ from 'lodash';
 import { sleep } from '../../../util';

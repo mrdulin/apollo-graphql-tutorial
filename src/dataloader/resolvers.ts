@@ -39,32 +39,6 @@ const resolvers: IResolvers = {
         .then((user) => user.name);
     },
   },
-
-  // For testing dataloader without caching
-  // Post: {
-  //   author: (post, _, { UserLoaderWithoutCaching }) => {
-  //     // return User.findById(post.userId);
-  //     return UserLoaderWithoutCaching.findByIds.load(post.userId);
-  //   },
-  //   authorName1: (post, _, { UserLoaderWithoutCaching }) => {
-  //     return UserLoaderWithoutCaching.findByIds
-  //       .load(post.userId)
-  //       .then(() => UserLoaderWithoutCaching.findByIds.load(post.userId))
-  //       .then((user) => user.name);
-  //   },
-  //   authorName2: (post, _, { UserLoaderWithoutCaching }) => {
-  //     return UserLoaderWithoutCaching.findByIds
-  //       .load(post.userId)
-  //       .then(() => UserLoaderWithoutCaching.findByIds.load(post.userId))
-  //       .then((user) => user.name);
-  //   },
-  //   authorName3: (post, _, { UserLoaderWithoutCaching }) => {
-  //     return UserLoaderWithoutCaching.findByIds
-  //       .load(post.userId)
-  //       .then(() => UserLoaderWithoutCaching.findByIds.load(post.userId))
-  //       .then((user) => user.name);
-  //   },
-  // },
 };
 
 export { resolvers };

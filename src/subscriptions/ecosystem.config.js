@@ -1,28 +1,12 @@
+const interpreter = 'ts-node';
+const script = './src/subscriptions/main.ts';
+const name = 'graphql-subscription-backend-server-instance';
+
 module.exports = {
   apps: [
-    {
-      name: 'graphql-subscription-backend-server-instance-1',
-      interpreter: 'ts-node',
-      script: './src/subscriptions/main.ts',
-      port: 3001,
-    },
-    {
-      name: 'graphql-subscription-backend-server-instance-2',
-      interpreter: 'ts-node',
-      script: './src/subscriptions/main.ts',
-      port: 3002,
-    },
-    {
-      name: 'graphql-subscription-backend-server-instance-3',
-      interpreter: 'ts-node',
-      script: './src/subscriptions/main.ts',
-      port: 3003,
-    },
-    {
-      name: 'graphql-subscription-backend-server-instance-4',
-      interpreter: 'ts-node',
-      script: './src/subscriptions/main.ts',
-      port: 3004,
-    },
+    { name: `${name}-1`, interpreter, script, port: 3001 },
+    { name: `${name}-2`, interpreter, script, port: 3002 },
+    { name: `${name}-3`, interpreter, script, port: 3003 },
+    { name: `${name}-4`, interpreter, script, port: 3004 },
   ],
 };

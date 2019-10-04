@@ -16,7 +16,7 @@ const resolversWIthCombineResolvers: IResolvers = {
       return db.posts.filter((post) => ids.includes(post.id.toString()));
     },
     adminUsers: combineResolvers(isAuthenticated, isAuthorized([Role.admin]), (_, __, { db }) => {
-      return db.users.find((user) => user.role === Role.admin);
+      return db.users.filter((user) => user.role === Role.admin) || [];
     }),
     config: combineResolvers(isAuthenticated, isAuthorized([Role.admin, Role.editor, Role.viewer]), () => {
       return { url: 'https://github.com/mrdulin' };

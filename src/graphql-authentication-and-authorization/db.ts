@@ -6,7 +6,27 @@ enum Role {
   editor = 'editor',
 }
 
-const db = {
+interface IUser {
+  id: number;
+  name: string;
+  email: string;
+  role: Role;
+  bitcoinAddress: string;
+}
+
+interface IPost {
+  id: number;
+  title: string;
+  content: string;
+  authorId: number;
+}
+
+interface IDB {
+  users: IUser[];
+  posts: IPost[];
+}
+
+const db: IDB = {
   users: [
     {
       id: 1,
@@ -31,4 +51,4 @@ const db = {
   ],
 };
 
-export { db, Role };
+export { db, Role, IUser, IPost, IDB };

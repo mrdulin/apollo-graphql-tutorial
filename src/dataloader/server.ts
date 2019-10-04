@@ -3,11 +3,11 @@ import { typeDefs } from './typeDefs';
 import { resolvers } from './resolvers';
 import { db } from './db';
 import { ApolloServerBase } from 'apollo-server-core';
-import { UserLoader, User, UserLoaderWithoutCaching } from './modules/user';
+import { UserLoader, User } from './modules/user';
 
 async function createApolloServer(): Promise<ApolloServerBase> {
   const PORT = process.env.PORT || 3000;
-  const server = new ApolloServer({ typeDefs, resolvers, context: { db, UserLoader, User, UserLoaderWithoutCaching } });
+  const server = new ApolloServer({ typeDefs, resolvers, context: { db, UserLoader, User } });
 
   await server
     .listen(PORT)
