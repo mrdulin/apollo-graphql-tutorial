@@ -3,7 +3,7 @@
     "node": "=10.16.0"
   },
   "name": "apollo-graphql-tutorial",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Deep into Apollo GraphQL with Node.js",
   "main": "",
   "scripts": {
