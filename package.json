@@ -10,7 +10,7 @@
     "clean": "rm -rf ./dist",
     "prebuild": "npm run clean",
     "build": "tsc",
-    "test": "jest --detectOpenHandles --silent",
+    "test": "jest --detectOpenHandles",
     "watch": "nodemon --watch './src/**/*.ts' --ignore './src/**/*.spec.ts' --exec 'ts-node'",
     "push-schema": "apollo service:push",
     "prettify": "prettier --config ./.prettierrc --write \"./{src,__{tests,mocks}__}/**/*.{ts,js}\"",
