@@ -16,6 +16,12 @@ const Q = {
       }
     }
   `,
+
+  someQuery: gql`
+    query someQuery($device: Device!) {
+      someQuery(device: $device)
+    }
+  `,
 };
 
 describe('custom-scalar-and-enum integration tests', () => {
@@ -64,6 +70,28 @@ describe('custom-scalar-and-enum integration tests', () => {
                 "device": "DESKTOP",
               },
             ],
+          },
+          "errors": undefined,
+          "extensions": undefined,
+          "http": Object {
+            "headers": Headers {
+              Symbol(map): Object {},
+            },
+          },
+        }
+      `);
+    });
+  });
+
+  describe('Query#someQuery', () => {
+    test('should get correct device', async () => {
+      const server: ApolloServerBase = new ApolloServer({ typeDefs, resolvers, context: { db } });
+      const { query }: ApolloServerTestClient = createTestClient(server);
+      const res: GraphQLResponse = await query({ query: Q.someQuery, variables: { device: 'DESKTOP' } });
+      expect(res).toMatchInlineSnapshot(`
+        Object {
+          "data": Object {
+            "someQuery": "DESKTOP",
           },
           "errors": undefined,
           "extensions": undefined,

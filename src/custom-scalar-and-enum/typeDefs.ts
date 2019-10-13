@@ -17,5 +17,6 @@ export const typeDefs = gql`
 
   type Query {
     campaignPerformanceReports: [CampaignPerformanceReport]!
+    someQuery(device: Device!): Device!
   }
 `;
