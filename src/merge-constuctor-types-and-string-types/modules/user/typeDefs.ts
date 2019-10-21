@@ -5,6 +5,8 @@ export const typeDefs = gql`
     id: ID!
     name: String
     email: String
+
+    # Use constructor type 'postType'
     posts: [Post]!
   }
 
