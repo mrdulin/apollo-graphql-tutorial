@@ -5,7 +5,10 @@ import { AuthenticationError } from 'apollo-server';
 
 let context = {
   db: {
-    posts: [{ id: 1, authorId: 1 }, { id: 2, authorId: 1 }],
+    posts: [
+      { id: 1, authorId: 1 },
+      { id: 2, authorId: 1 },
+    ],
     users: [{ id: 1 }],
   },
   req: {
