@@ -85,6 +85,7 @@
     "graphql-middleware": "^3.0.3",
     "graphql-postgres-subscriptions": "^1.0.5",
     "graphql-resolvers": "^0.3.3",
+    "graphql.js": "^0.6.6",
     "hapi": "^18.1.0",
     "humps": "^2.0.1",
     "knex": "^0.19.3",
