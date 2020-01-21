@@ -2,8 +2,6 @@ import { createTestClient } from 'apollo-server-testing';
 import { createApolloServer } from '../server';
 import fetch from 'node-fetch';
 import FormData from 'form-data';
-import fs from 'fs';
-import path from 'path';
 import { ApolloServerBase } from 'apollo-server-core';
 
 // https://github.com/jaydenseric/graphql-multipart-request-spec
@@ -24,7 +22,7 @@ async function upload(body) {
   return fetch('http://localhost:4000', { method: 'POST', body }).then((response) => response.json());
 }
 
-describe('upload', () => {
+describe.skip('upload', () => {
   it('should upload file correctly with test server', async () => {
     const body = new FormData();
     body.append(
