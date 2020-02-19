@@ -77,6 +77,7 @@
     "apollo-datasource-rest": "^0.6.11",
     "apollo-link-http": "^1.5.16",
     "apollo-server": "^2.9.11",
+    "apollo-server-cache-redis": "^1.1.5",
     "apollo-server-express": "^2.9.11",
     "apollo-server-hapi": "^2.9.15",
     "cookie": "^0.4.0",

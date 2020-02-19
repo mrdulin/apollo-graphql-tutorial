@@ -1,6 +1,8 @@
 import { ApolloServer, gql } from 'apollo-server-express';
 import { RESTDataSource } from 'apollo-datasource-rest';
 import express from 'express';
+import { RedisCache } from 'apollo-server-cache-redis';
+import { Request } from 'apollo-server-env';
 
 class MyAPI extends RESTDataSource {
   constructor() {
@@ -9,6 +11,10 @@ class MyAPI extends RESTDataSource {
   }
   public async getUser() {
     return this.get('user');
+  }
+
+  protected cacheKeyFor(request: Request) {
+    return request.url;
   }
 }
 
@@ -45,6 +51,12 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   dataSources,
+  cache: new RedisCache({
+    port: 6379,
+    host: '127.0.0.1',
+    family: 4,
+    db: 0,
+  }),
 });
 
 server.applyMiddleware({ app, path: graphqlPath });
