@@ -12,7 +12,9 @@ class MyAPI extends RESTDataSource {
   public async getUser() {
     return this.get('user');
   }
-
+  public async getProject() {
+    return this.get('project');
+  }
   protected cacheKeyFor(request: Request) {
     return request.url;
   }
@@ -23,8 +25,12 @@ const typeDefs = gql`
     name: String
     email: String
   }
+  type Project {
+    name: String
+  }
   type Query {
     user: User
+    project: Project
   }
 `;
 
@@ -32,6 +38,9 @@ const resolvers = {
   Query: {
     user: async (_, __, { dataSources: ds }: IAppContext) => {
       return ds.myAPI.getUser();
+    },
+    project: async (_, __, { dataSources: ds }: IAppContext) => {
+      return ds.myAPI.getProject();
     },
   },
 };
