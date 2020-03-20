@@ -52,7 +52,7 @@
     "@types/ws": "^6.0.3",
     "apollo": "^2.21.1",
     "apollo-server-testing": "^2.9.11",
-    "coveralls": "^3.0.8",
+    "coveralls": "^3.0.11",
     "dotenv": "^8.2.0",
     "faker": "^4.1.0",
     "form-data": "^2.5.1",
