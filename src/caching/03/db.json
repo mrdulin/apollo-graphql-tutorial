@@ -1,0 +1,26 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Dr. Amya Schiller",
+      "email": "Eda4@yahoo.com"
+    },
+    {
+      "id": 2,
+      "name": "Consuelo Mohr",
+      "email": "Adele_Ankunding99@yahoo.com"
+    },
+    {
+      "id": 3,
+      "name": "Pete Gorczany",
+      "email": "Geovanny_Satterfield@gmail.com"
+    }
+  ],
+  "store": {
+    "1": "aaa",
+    "2": {
+      "name": "Raegan Armstrong"
+    },
+    "3": []
+  }
+}
