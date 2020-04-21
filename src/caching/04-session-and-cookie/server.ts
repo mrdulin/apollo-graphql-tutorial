@@ -5,12 +5,38 @@ import faker from 'faker';
 import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
+import { GraphQLError } from 'graphql';
 
-const memoryDb = { sessions: [], users: [{ id: 1, email: 'lin@gmail.com', password: '123' }] };
+interface ISession {
+  id: string | number;
+  userId: string | number;
+  ipAddress: string;
+  userAgent: string;
+}
+
+interface IUser {
+  id: string | number;
+  email: string;
+  password: string;
+}
+
+interface IDB {
+  sessions: ISession[];
+  users: IUser[];
+}
+
+const memoryDb: IDB = {
+  sessions: [],
+  users: [
+    { id: 1, email: 'lin@gmail.com', password: '123' },
+    { id: 2, email: 'du@gmail.com', password: 'abc' },
+  ],
+};
+const jwtSecret = 'test secret';
 
 const typeDefs = gql`
-  type User @cacheControl(maxAge: 30) {
-    name: String
+  type User @cacheControl(maxAge: 30, scope: PRIVATE) {
+    id: ID
     email: String
   }
   type Query {
@@ -26,9 +52,28 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    user: async () => {
+    user: async (_, __, { db, req }) => {
       console.count('resolve user');
-      const user = { name: faker.name.findName(), email: faker.internet.exampleEmail() };
+      const sessionToken = req.cookies.sId;
+      if (!sessionToken) {
+        throw new AuthenticationError('Unauthenticated');
+      }
+      let tokenDecrypted;
+      try {
+        tokenDecrypted = jwt.verify(sessionToken, jwtSecret);
+      } catch (error) {
+        console.log(error);
+        throw new GraphQLError('Internal server error');
+      }
+      const { sId } = tokenDecrypted;
+      if (!sId) {
+        throw new AuthenticationError('Unauthenticated');
+      }
+      const session = db.sessions.find((s) => s.id === sId);
+      const user = db.users.find((u) => u.id === session.userId);
+      if (!user) {
+        throw new AuthenticationError(`user not found`);
+      }
       return user;
     },
   },
@@ -49,9 +94,9 @@ const resolvers = {
       const session = { id: faker.random.uuid(), userId: user.id, ipAddress, userAgent };
       db.sessions.push(session);
       // create session id
-      const sId = jwt.sign({ id: session.id }, 'test secret', { expiresIn: 0 });
+      const sId = jwt.sign({ sId: session.id }, jwtSecret);
       // set cookie
-      res.cookie('sId', sId, { maxAge: 30 * 1000 });
+      res.cookie('sId', sId, { maxAge: 60 * 1000 });
       return { success: true };
     },
   },
@@ -71,7 +116,7 @@ const server = new ApolloServer({
   plugins: [
     responseCachePlugin({
       sessionId: (requestContext) => {
-        return '';
+        return requestContext.context.req.cookies.sId;
       },
     }),
   ],

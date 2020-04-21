@@ -6,10 +6,23 @@
     <title>04</title>
   </head>
   <body>
-    <button id="login">Login</button>
+    <form id="login-form">
+      <div>
+        <label for="email">Email:</label>
+        <input id="email" name="email" type="text" />
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input id="password" name="password" type="password" />
+      </div>
+      <button type="submit" id="login">Login</button>
+    </form>
+
+    <button id="fetch-user">Fetch User</button>
+
     <script>
-      async function login() {
-        const res = await fetch('http://localhost:3001/graphql', {
+      async function login(email, password) {
+        return fetch('http://localhost:3001/graphql', {
           method: 'POST',
           body: JSON.stringify({
             query: `
@@ -20,21 +33,49 @@
               }
             `,
             variables: {
-              email: 'lin@gmail.com',
-              password: '123',
+              email,
+              password,
             },
           }),
           headers: {
             'Content-Type': 'application/json',
           },
-        });
-        console.log(res);
+        }).then((res) => res.json());
+      }
+
+      async function fetchUser() {
+        return fetch('http://localhost:3001/graphql', {
+          method: 'POST',
+          body: JSON.stringify({
+            query: `
+              {
+                user {
+                  id
+                  email
+                }
+              }
+            `,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }).then((res) => res.json());
       }
       window.onload = async function() {
-        const $loginButton = document.getElementById('login');
-        $loginButton.addEventListener('click', async () => {
-          const res = await login();
+        const $loginForm = document.getElementById('login-form');
+        const $fetchUser = document.getElementById('fetch-user');
+        $loginForm.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const target = event.target;
+          const emailValue = target.elements.namedItem('email').value;
+          const passwordValue = target.elements.namedItem('password').value;
+          const res = await login(emailValue, passwordValue);
+          console.log(res);
           console.log(`login ${res.data.success ? 'success' : 'fail'}`);
+        });
+        $fetchUser.addEventListener('click', async () => {
+          const res = await fetchUser();
+          console.log(res);
         });
       };
     </script>
