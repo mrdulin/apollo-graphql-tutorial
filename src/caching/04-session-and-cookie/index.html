@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>04</title>
+  </head>
+  <body>
+    <button id="login">Login</button>
+    <script>
+      async function login() {
+        const res = await fetch('http://localhost:3001/graphql', {
+          method: 'POST',
+          body: JSON.stringify({
+            query: `
+              mutation login($email: String!, $password: String!) {
+                login (email: $email, password: $password) {
+                  success
+                }
+              }
+            `,
+            variables: {
+              email: 'lin@gmail.com',
+              password: '123',
+            },
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        console.log(res);
+      }
+      window.onload = async function() {
+        const $loginButton = document.getElementById('login');
+        $loginButton.addEventListener('click', async () => {
+          const res = await login();
+          console.log(`login ${res.data.success ? 'success' : 'fail'}`);
+        });
+      };
+    </script>
+  </body>
+</html>
