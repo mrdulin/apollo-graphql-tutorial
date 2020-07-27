@@ -7,6 +7,7 @@ const resolvers: IResolvers = {
       return db.posts;
     },
     userById: (_, { id }, { db }) => {
+      console.count('Query.userById');
       const user = db.users.find((u) => u.userId.toString() === id);
       return user;
     },
