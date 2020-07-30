@@ -1,5 +1,5 @@
-import { IResolvers } from 'graphql-tools';
 import { IAppContext } from './appContext';
+import { IResolvers } from 'apollo-server';
 
 export const resolvers: IResolvers = {
   Device: {

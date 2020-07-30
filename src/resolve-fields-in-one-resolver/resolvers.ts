@@ -1,4 +1,4 @@
-import { IResolvers } from 'graphql-tools';
+import { IResolvers } from 'apollo-server';
 
 const resolvers: IResolvers = {
   Query: {

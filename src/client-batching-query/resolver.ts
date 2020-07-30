@@ -1,5 +1,5 @@
-import { IResolvers } from 'graphql-tools';
 import faker from 'faker';
+import { IResolvers } from 'apollo-server';
 
 const resolvers: IResolvers = {
   Query: {
