@@ -62,7 +62,7 @@ async function getBookServiceSchema() {
   return executableSchema;
 }
 
-(async function createApolloServer() {
+async function createApolloServer() {
   const PORT = 3001;
   const bookServiceSchema = await getBookServiceSchema();
   const userServiceSchema = makeExecutableSchema({ typeDefs, resolvers });
@@ -72,7 +72,7 @@ async function getBookServiceSchema() {
 
   const server = new ApolloServer({ schema: userServiceSchema, context: { db: MemoryDB, bookServiceSchema } });
 
-  server
+  return server
     .listen(PORT)
     .then(({ url }: ServerInfo) => {
       console.log(`🚀 Server ready at ${url}`);
@@ -81,4 +81,10 @@ async function getBookServiceSchema() {
       console.error('Create server failed.');
       console.error(error);
     });
-})();
+}
+
+if (require.main === module) {
+  createApolloServer();
+}
+
+export { createApolloServer };
