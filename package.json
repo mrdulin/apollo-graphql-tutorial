@@ -49,6 +49,7 @@
     "@types/lodash": "^4.14.157",
     "@types/lowdb": "^1.0.9",
     "@types/morgan": "^1.9.1",
+    "@types/multer": "^1.4.3",
     "@types/node-fetch": "^2.5.7",
     "@types/pg": "^7.14.4",
     "@types/supertest": "^2.0.10",
@@ -89,6 +90,7 @@
     "apollo-server-express": "^2.15.1",
     "apollo-server-hapi": "^2.15.1",
     "apollo-server-plugin-response-cache": "^0.5.3",
+    "axios": "^0.19.2",
     "cookie": "^0.4.1",
     "cookie-parser": "^1.4.5",
     "cross-fetch": "^3.0.5",
@@ -110,6 +112,7 @@
     "lodash": "^4.17.19",
     "lowdb": "^1.0.0",
     "morgan": "^1.10.0",
+    "multer": "^1.4.2",
     "pg": "^7.18.2",
     "subscriptions-transport-ws": "^0.9.17",
     "ws": "^6.2.1"
