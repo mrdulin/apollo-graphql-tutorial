@@ -3,13 +3,9 @@
 [![Build Status][travis badge]][travis link]
 [![Coverage Status][coveralls badge]][coveralls link]
 
-Deep into Apollo GraphQL with Node.js
+Learning [apollographql](https://www.apollographql.com/) version 2.x with Node.js by examples.
 
 If you are looking for tutorial for Apollo GraphQL version 1.x, please see this [repo](https://github.com/mrdulin/apollo-server-express-starter)
-
-## TODO
-
-- [ ] https://www.apollographql.com/docs/references/apollo-config
 
 ## References
 
