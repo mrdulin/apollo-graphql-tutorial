@@ -1,10 +1,19 @@
 import { ApolloServer, gql } from 'apollo-server';
 import { ApolloServerPlugin } from 'apollo-server-plugin-base';
+import { parse, OperationDefinitionNode, FieldNode } from 'graphql';
 
 function eddyApolloPlugin(): ApolloServerPlugin {
   return {
     requestDidStart(requestContext) {
       return {
+        didResolveOperation(context) {
+          console.log('didResolveOperation');
+          const obj = parse(context.request.query!);
+          const operationDefinition = obj.definitions[0] as OperationDefinitionNode;
+          const selection = operationDefinition.selectionSet.selections[0] as FieldNode;
+          console.log('operationName: ', context.request.operationName);
+          console.log(`${context.operation!.operation} name:`, selection.name.value);
+        },
         willSendResponse(context) {
           console.log('willSendResponse');
           console.log('operationName: ', context.request.operationName);
