@@ -105,6 +105,7 @@
     "graphql-postgres-subscriptions": "^1.0.5",
     "graphql-resolvers": "^0.4.2",
     "graphql-tools": "^6.0.15",
+    "graphql-upload": "^12.0.0",
     "graphql.js": "^0.6.6",
     "hapi": "^18.1.0",
     "humps": "^2.0.1",
