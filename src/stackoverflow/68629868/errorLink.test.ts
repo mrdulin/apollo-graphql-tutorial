@@ -10,6 +10,7 @@ const MockQuery = gql`
 
 describe('68629868', () => {
   test('should pass', (done) => {
+    expect.assertions(1);
     const mockLink = new ApolloLink((operation) =>
       Observable.of({
         errors: [
