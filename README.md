@@ -1,4 +1,4 @@
-# Learning apollo graphql version 2.x
+# Learning apollo graphql version 2.x with Node.js
 
 [![Build Status][travis badge]][travis link]
 [![Coverage Status][coveralls badge]][coveralls link]
