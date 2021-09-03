@@ -26,6 +26,7 @@ const typeDefs = gql`
 
   type Booking {
     id: ID!
+    name: String
   }
 
   type Query {

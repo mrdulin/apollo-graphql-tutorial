@@ -2,17 +2,19 @@ import { ApolloServer, gql, ServerInfo } from 'apollo-server';
 
 const MemoryDB = {
   books: [
-    { id: 1, userId: 1 },
-    { id: 2, userId: 1 },
-    { id: 3, userId: 1 },
-    { id: 4, userId: 1 },
-    { id: 5, userId: 1 },
+    { id: 1, name: 'GraphQL in Action', userId: 1 },
+    { id: 2, name: 'Go', userId: 1 },
+    { id: 3, name: 'JavaScript', userId: 1 },
+    { id: 4, name: 'Python', userId: 1 },
+    { id: 5, name: 'Node.js', userId: 1 },
   ],
 };
 
 const typeDefs = gql`
   type Booking {
     id: ID!
+    name: String
+    userId: ID
   }
 
   type Query {
